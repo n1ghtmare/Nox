@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" total="1" errors="1" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-02" time="22:02:50">
+  <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5444" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.2\bin" machine-name="STTIKR64" user="nightmare" user-domain="STTIKR64" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" executed="True" result="Failure" success="False" time="0.491" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="Nox" executed="True" result="Failure" success="False" time="0.473" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="Tests" executed="True" result="Failure" success="False" time="0.473" asserts="0">
+            <results>
+              <test-suite type="TestFixture" name="Get" executed="True" result="Failure" success="False" time="0.471" asserts="0">
+                <results>
+                  <test-case name="Nox.Tests.Get.GivenAWhereClauseAndParameters_CallsProviderExecuteQueryWithCorrectSqlQuery" executed="True" result="Error" success="False" time="0.460" asserts="0">
+                    <failure>
+                      <message><![CDATA[Moq.MockException : 
+Expected invocation on the mock once, but was 0 times: x => x.ExecuteQuery("SELECT * FROM Employees WHERE FirstName='Dimitar' and LastName='Dimitrov'")
+No setups configured.
+No invocations performed.]]></message>
+                      <stack-trace><![CDATA[at Moq.Mock.ThrowVerifyException(MethodCall expected, IEnumerable`1 setups, IEnumerable`1 actualCalls, Expression expression, Times times, Int32 callCount)
+at Moq.Mock.VerifyCalls(Interceptor targetInterceptor, MethodCall expected, Expression expression, Times times)
+at Moq.Mock.Verify[T,TResult](Mock mock, Expression`1 expression, Times times, String failMessage)
+at Moq.Mock`1.Verify[TResult](Expression`1 expression, Times times)
+at Nox.Tests.Get.GivenAWhereClauseAndParameters_CallsProviderExecuteQueryWithCorrectSqlQuery() in c:\Nox\Nox.Tests\Fetch.cs:line 32
+]]></stack-trace>
+                    </failure>
+                  </test-case>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

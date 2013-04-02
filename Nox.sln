@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nox", "Nox\Nox.csproj", "{CED77970-B9EC-4251-83A4-135D719066AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nox.Tests", "Nox.Tests\Nox.Tests.csproj", "{A1712A3E-1FC0-41ED-A599-11DA2C7CAE67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nox", "Nox\Nox.csproj", "{307F472C-C7C3-4CA3-B120-71958270CD70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +11,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CED77970-B9EC-4251-83A4-135D719066AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CED77970-B9EC-4251-83A4-135D719066AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CED77970-B9EC-4251-83A4-135D719066AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CED77970-B9EC-4251-83A4-135D719066AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1712A3E-1FC0-41ED-A599-11DA2C7CAE67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1712A3E-1FC0-41ED-A599-11DA2C7CAE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1712A3E-1FC0-41ED-A599-11DA2C7CAE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1712A3E-1FC0-41ED-A599-11DA2C7CAE67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{307F472C-C7C3-4CA3-B120-71958270CD70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{307F472C-C7C3-4CA3-B120-71958270CD70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{307F472C-C7C3-4CA3-B120-71958270CD70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{307F472C-C7C3-4CA3-B120-71958270CD70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
