@@ -35,7 +35,7 @@ namespace Nox.Tests.Helpers
             var readToggle = true;
 
             mockDataReader.Setup(x => x.Read()).Returns(() => readToggle).Callback(() => readToggle = false);
-            mockDataReader.Setup(x => x.FieldCount).Returns(1);
+            mockDataReader.Setup(x => x.FieldCount).Returns(3);
             
             mockDataReader.Setup(x => x.GetName(0)).Returns("TestPropertyString");
             mockDataReader.Setup(x => x[0]).Returns("TestResult");
@@ -43,8 +43,8 @@ namespace Nox.Tests.Helpers
             mockDataReader.Setup(x => x.GetName(1)).Returns("TestPropertyInt");
             mockDataReader.Setup(x => x[1]).Returns(1);            
             
-            mockDataReader.Setup(x => x.GetName(1)).Returns("TestPropertyDateTime");
-            mockDataReader.Setup(x => x[1]).Returns(DateTime.Today);
+            mockDataReader.Setup(x => x.GetName(2)).Returns("TestPropertyDateTime");
+            mockDataReader.Setup(x => x[2]).Returns(DateTime.Today);
 
             return mockDataReader;
         }
