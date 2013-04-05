@@ -87,23 +87,48 @@ namespace Nox.Tests
             var nox = TestableNox.Create();
             var parameters = new {FirstName = "John", LastName = "Doe"};
             var mockCommand = new Mock<IDbCommand>();
+            var mockParameterCollection = new Mock<IDataParameterCollection>();
+
+            mockCommand.Setup(x => x.Parameters)
+                       .Returns(mockParameterCollection.Object);
 
             nox.MockNoxProvider
                .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
                .Returns(mockCommand.Object);
 
-            // TODO -> continue here
             nox.MockNoxProvider
                .Setup(x => x.CreateParameters(It.IsAny<object>()))
-               .Returns(new List<IDbDataParameter> {new SqlParameter(), new SqlParameter()});
+               .Returns(new List<IDbDataParameter>
+                   {
+                       new SqlParameter("@FirstName", "John"), 
+                       new SqlParameter("@LastName", "Doe")
+                   });
             
             // Act
             nox.Execute(query: QueryWithParameters, parameters: parameters);
 
             // Assert
-            mockCommand
-                .Verify(x => x.Parameters.Add(It.IsAny<IDbDataParameter>()),
-                               Times.Exactly(2));
+            mockParameterCollection
+                .Verify(x => x.Add(It.IsAny<IDataParameter>()),
+                Times.Exactly(2));
+        }
+
+        [Test]
+        public void GivenAQuery_CallsNoxProviderConnectionOpen()
+        {
+            // Arrange
+            var nox = TestableNox.Create();
+            var mockConnection = new Mock<IDbConnection>();
+
+            nox.MockNoxProvider
+               .Setup(x => x.CreateConnection())
+               .Returns(mockConnection.Object);
+
+            // Act
+            nox.Execute(Query);
+
+            // Assert
+            mockConnection.Verify(x => x.Open(), Times.Once());
         }
     }
 
@@ -113,7 +138,7 @@ namespace Nox.Tests
 
         IDbConnection CreateConnection();
         IDbCommand CreateCommand(string query, IDbConnection dbConnection);
-        IEnumerable<IDbDataParameter> CreateParameters(object parameters);
+        IEnumerable<IDataParameter> CreateParameters(object parameters);
     }
 
 //    public class SqlServerNoxProvider : INoxProvider
@@ -183,18 +208,16 @@ namespace Nox.Tests
         public IEnumerable<dynamic> Execute(string query, object parameters = null)
         {
             using (IDbConnection connection = _provider.CreateConnection())
+            using (IDbCommand command = _provider.CreateCommand(query, connection))
             {
-                using (IDbCommand command = _provider.CreateCommand(query, connection))
-                {
-                    IEnumerable<IDbDataParameter> generatedParameters = _provider.CreateParameters(parameters);
-                    
-                    foreach (var param in generatedParameters)
-                    {
-                        command.Parameters.Add(param);
-                    }
-                    
-                }
+                IEnumerable<IDataParameter> generatedParameters = _provider.CreateParameters(parameters);
+
+                foreach (var param in generatedParameters)
+                    command.Parameters.Add(param);
+
+                connection.Open();
             }
+
 
             return null;
         }
