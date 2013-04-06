@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" total="9" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-06" time="13:35:00">
+<test-results name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" total="9" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-06" time="14:22:52">
   <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5444" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.2\bin" machine-name="STTIKR64" user="nightmare" user-domain="STTIKR64" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" executed="True" result="Success" success="True" time="0.074" asserts="0">
+  <test-suite type="Assembly" name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" executed="True" result="Success" success="True" time="1.556" asserts="0">
     <results>
-      <test-suite type="Namespace" name="Nox" executed="True" result="Success" success="True" time="0.074" asserts="0">
+      <test-suite type="Namespace" name="Nox" executed="True" result="Success" success="True" time="1.538" asserts="0">
         <results>
-          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="0.073" asserts="0">
+          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="1.538" asserts="0">
             <results>
-              <test-suite type="TestFixture" name="Execute" executed="True" result="Success" success="True" time="0.072" asserts="0">
+              <test-suite type="TestFixture" name="Execute" executed="True" result="Success" success="True" time="1.536" asserts="0">
                 <results>
-                  <test-case name="Nox.Tests.Execute.Query_CallsNoxProviderCommandExecuteReader" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                  <test-case name="Nox.Tests.Execute.Query_CallsNoxProviderConnectionOpen" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                  <test-case name="Nox.Tests.Execute.Query_CallsNoxProviderCreateCommand" executed="True" result="Success" success="True" time="0.004" asserts="0" />
-                  <test-case name="Nox.Tests.Execute.Query_CallsNoxProviderCreateConnection" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                  <test-case name="Nox.Tests.Execute.QueryAndAnInvalidType_ThrowsAnException" executed="True" result="Success" success="True" time="0.006" asserts="2" />
-                  <test-case name="Nox.Tests.Execute.QueryAndType_ReturnsCorrectlyMappedType" executed="True" result="Success" success="True" time="0.006" asserts="3" />
-                  <test-case name="Nox.Tests.Execute.QueryThatFindsResults_ReturnsAListOfDynamicResultsWithCorrectCount" executed="True" result="Success" success="True" time="0.008" asserts="3" />
-                  <test-case name="Nox.Tests.Execute.QueryWithParameters_CallsNoxProviderCommandAddParameterForEachProvidedParameter" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                  <test-case name="Nox.Tests.Execute.QueryWithParameters_CallsNoxProviderCreateParameters" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                  <test-case name="Nox.Tests.Execute.Query_CallsNoxProviderCommandExecuteReader" executed="True" result="Success" success="True" time="0.556" asserts="0" />
+                  <test-case name="Nox.Tests.Execute.Query_CallsNoxProviderConnectionOpen" executed="True" result="Success" success="True" time="0.006" asserts="0" />
+                  <test-case name="Nox.Tests.Execute.Query_CallsNoxProviderCreateCommand" executed="True" result="Success" success="True" time="0.026" asserts="0" />
+                  <test-case name="Nox.Tests.Execute.Query_CallsNoxProviderCreateConnection" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                  <test-case name="Nox.Tests.Execute.QueryAndAnInvalidType_ThrowsAnException" executed="True" result="Success" success="True" time="0.719" asserts="2" />
+                  <test-case name="Nox.Tests.Execute.QueryAndType_ReturnsCorrectlyMappedType" executed="True" result="Success" success="True" time="0.042" asserts="3" />
+                  <test-case name="Nox.Tests.Execute.QueryThatFindsResults_ReturnsAListOfDynamicResultsWithCorrectCount" executed="True" result="Success" success="True" time="0.106" asserts="3" />
+                  <test-case name="Nox.Tests.Execute.QueryWithParameters_CallsNoxProviderCommandAddParameterForEachProvidedParameter" executed="True" result="Success" success="True" time="0.035" asserts="0" />
+                  <test-case name="Nox.Tests.Execute.QueryWithParameters_CallsNoxProviderCreateParameters" executed="True" result="Success" success="True" time="0.005" asserts="0" />
                 </results>
               </test-suite>
             </results>
