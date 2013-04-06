@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
+using System.Linq;
+using System.Reflection;
 
 namespace Nox
 {
@@ -14,10 +16,10 @@ namespace Nox
             _provider = provider;
         }
 
-        public IEnumerable<T> Execute<T>(string query, object parameters = null) where T : new()
+        public IEnumerable<T> Execute<T>(string query, object parameters = null, bool isStoredProcedure = false) where T : new()
         {
             using (IDbConnection connection = _provider.CreateConnection())
-            using (IDbCommand command = _provider.CreateCommand(query, connection))
+            using (IDbCommand command = _provider.CreateCommand(query, connection, isStoredProcedure))
             {
                 AppendParameters(command, parameters);
 
@@ -36,15 +38,15 @@ namespace Nox
             }
         }
 
-        public IEnumerable<dynamic> Execute(string query, object parameters = null)
+        public IEnumerable<dynamic> Execute(string query, object parameters = null, bool isStoredProcedure = false)
         {
-            return Execute<dynamic>(query, parameters);
+            return Execute<dynamic>(query, parameters).ToList();
         }
 
-        public T ExecuteScalar<T>(string query, object parameters = null)
+        public T ExecuteScalar<T>(string query, object parameters = null, bool isStoredProcedure = false)
         {
             using (IDbConnection connection = _provider.CreateConnection())
-            using (IDbCommand command = _provider.CreateCommand(query, connection))
+            using (IDbCommand command = _provider.CreateCommand(query, connection, isStoredProcedure))
             {
                 AppendParameters(command, parameters);
 
@@ -63,22 +65,20 @@ namespace Nox
 
         private static T ComposeType<T>(IDataReader reader) where T : new()
         {
-            try
-            {
-                dynamic entity = new T();
+            Type currentType = typeof (T);
 
-                for (int i = 0; i < reader.FieldCount; i++)
-                    (typeof (T)).GetProperty(reader.GetName(i)).SetValue(entity, reader[i]);
+            if (currentType.GetProperties().Length == 0)
+                throw new Exception("Can't map the results to the provided type, you can try to use dynamic as return type.");
 
-                return entity;
-            }
-            catch (Exception ex)
+            dynamic entity = new T();
+            for (int i = 0; i < reader.FieldCount; i++)
             {
-                throw new Exception(
-                    string.Format(
-                        "Can't map the results to the provided type, you can try to use dynamic as return type. - Inner Exception::{0}",
-                        ex.InnerException));
+                PropertyInfo property = currentType.GetProperty(reader.GetName(i));
+
+                if (property != null)
+                    property.SetValue(entity, reader[i]);
             }
+            return entity;
         }
 
         private static IDictionary<string, object> ComposeExpandoObject(IDataReader reader)

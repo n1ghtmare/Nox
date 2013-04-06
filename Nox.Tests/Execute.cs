@@ -43,7 +43,7 @@ namespace Nox.Tests
 
             // Assert
             nox.MockNoxProvider
-               .Verify(x => x.CreateCommand(TestableNox.Query, mockConnection.Object),
+               .Verify(x => x.CreateCommand(TestableNox.Query, mockConnection.Object, false),
                        Times.Once());
         }
 
@@ -77,7 +77,7 @@ namespace Nox.Tests
                        .Returns(mockParameterCollection.Object);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
                .Returns(mockCommand.Object);
 
             nox.MockNoxProvider
@@ -123,7 +123,7 @@ namespace Nox.Tests
             var mockCommand = new Mock<IDbCommand>();
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
                .Returns(mockCommand.Object);
             
             // Act
@@ -144,7 +144,7 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
                .Returns(mockCommand.Object);
 
             // Act
@@ -156,7 +156,36 @@ namespace Nox.Tests
             Assert.AreEqual("TestResult", results.First().TestPropertyString);
         }
 
+        [Test]
+        public void QueryReturningMoreColumnsThanThePropertiesInTheType_ReturnsCorrectlyMappedType()
+        {
+            // Arrange
+            var nox = TestableNox.Create();
+            var mockDataReader = TestableNox.CreateDataReader();
+            var readToggle = true;
 
+            mockDataReader.Setup(x => x.Read()).Returns(() => readToggle).Callback(() => readToggle = false);
+            mockDataReader.Setup(x => x.FieldCount).Returns(4);      
+            
+            mockDataReader.Setup(x => x.GetName(3)).Returns("TestPropertyNonExistant");
+            mockDataReader.Setup(x => x[3]).Returns("TestValueThatIsIrrelevant");
+
+            var mockCommand = new Mock<IDbCommand>();
+
+            mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
+
+            nox.MockNoxProvider
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
+               .Returns(mockCommand.Object);
+
+            // Act
+            TestEntity testEntity = nox.Execute<TestEntity>(TestableNox.Query).ToList().First();
+
+            // Assert
+            Assert.AreEqual(DateTime.Today, testEntity.TestPropertyDateTime);
+            Assert.AreEqual(1, testEntity.TestPropertyInt);
+            Assert.AreEqual("TestResult", testEntity.TestPropertyString);
+        }
 
         [Test]
         public void QueryAndType_ReturnsCorrectlyMappedType()
@@ -169,14 +198,13 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
                .Returns(mockCommand.Object);
 
             // Act
-            IEnumerable<TestEntity> results = nox.Execute<TestEntity>(TestableNox.Query).ToList();
+            TestEntity testEntity = nox.Execute<TestEntity>(TestableNox.Query).ToList().First();
 
             // Assert
-            TestEntity testEntity = results.First();
             Assert.AreEqual(DateTime.Today, testEntity.TestPropertyDateTime);
             Assert.AreEqual(1, testEntity.TestPropertyInt);
             Assert.AreEqual("TestResult", testEntity.TestPropertyString);
@@ -193,7 +221,7 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
                .Returns(mockCommand.Object);
 
             // Act

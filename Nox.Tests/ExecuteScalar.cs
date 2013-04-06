@@ -42,7 +42,7 @@ namespace Nox.Tests
 
             // Assert
             nox.MockNoxProvider
-               .Verify(x => x.CreateCommand(TestableNox.QueryScalar, mockConnection.Object),
+               .Verify(x => x.CreateCommand(TestableNox.QueryScalar, mockConnection.Object, false),
                        Times.Once());
         }
 
@@ -76,7 +76,7 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteScalar()).Returns(0);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
                .Returns(mockCommand.Object);
 
             nox.MockNoxProvider
@@ -122,7 +122,7 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteScalar()).Returns(0);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
                .Returns(mockCommand.Object);
 
             // Act
@@ -142,7 +142,7 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteScalar()).Returns(1);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
                .Returns(mockCommand.Object);
 
             // Act
