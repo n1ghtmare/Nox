@@ -26,6 +26,7 @@ namespace Nox
                 {
                     while (reader != null && reader.Read())
                     {
+                        // TODO -> need to optimize this bit here
                         if (typeof(T) == typeof(Object))
                             yield return (T)ComposeExpandoObject(reader);
                         else
