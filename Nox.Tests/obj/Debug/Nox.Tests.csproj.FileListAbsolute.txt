@@ -9,3 +9,5 @@ C:\Nox\Nox.Tests\bin\Debug\Moq.dll
 C:\Nox\Nox.Tests\bin\Debug\Moq.pdb
 C:\Nox\Nox.Tests\bin\Debug\Moq.xml
 C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll.config
+C:\Nox\Nox.Tests\bin\Debug\Nox.dll
+C:\Nox\Nox.Tests\bin\Debug\Nox.pdb

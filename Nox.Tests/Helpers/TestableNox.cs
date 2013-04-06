@@ -6,6 +6,11 @@ namespace Nox.Tests.Helpers
 {
     public class TestableNox : Nox
     {
+        public const string QueryScalar = "spThatReturnsASingleResult";
+        public const string QueryScalarWithParameters = QueryScalar + " @TestFirstParameter = @TestFirstParameter and TestSecondParameter = @TestSecondParameter";
+        public const string Query = "select * from TestTable";
+        public const string QueryWithParameters = Query + " where TestFirstParameter = @TestFirstParameter and TestSecondParameter = @TestSecondParameter";
+
         public Mock<INoxProvider> MockNoxProvider { get; set; }
 
         public TestableNox(Mock<INoxProvider> mockNoxProvider)
@@ -17,6 +22,11 @@ namespace Nox.Tests.Helpers
         public static TestableNox Create()
         {
             var mockNoxProvider = new Mock<INoxProvider>();
+            var mockCommand = new Mock<IDbCommand>();
+
+            mockCommand
+                .Setup(x => x.ExecuteScalar())
+                .Returns(0);
 
             mockNoxProvider
                 .Setup(x => x.CreateConnection())
@@ -24,7 +34,7 @@ namespace Nox.Tests.Helpers
 
             mockNoxProvider
                .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
-               .Returns(new Mock<IDbCommand>().Object);
+               .Returns(mockCommand.Object);
 
             return new TestableNox(mockNoxProvider);
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Dynamic;
 using System.Linq;
 
 using Moq;
@@ -14,17 +13,14 @@ namespace Nox.Tests
 {
     public class Execute
     {
-        private const string Query = "select * from Accounts";
-        private const string QueryWithParameters = Query + " where FirstName = @FirstName and LastName = @LastName";
-        
         [Test]
         public void Query_CallsNoxProviderCreateConnection()
         {
             // Arrange
             var nox = TestableNox.Create();
-
+            
             // Act
-            nox.Execute(Query).ToList();
+            nox.Execute<TestEntity>(TestableNox.Query).ToList();
 
             // Assert
             nox.MockNoxProvider
@@ -43,11 +39,11 @@ namespace Nox.Tests
                .Returns(mockConnection.Object);
 
             // Act
-            nox.Execute(Query).ToList();
+            nox.Execute<TestEntity>(TestableNox.Query).ToList();
 
             // Assert
             nox.MockNoxProvider
-               .Verify(x => x.CreateCommand(Query, mockConnection.Object),
+               .Verify(x => x.CreateCommand(TestableNox.Query, mockConnection.Object),
                        Times.Once());
         }
 
@@ -60,7 +56,7 @@ namespace Nox.Tests
 
 
             // Act
-            nox.Execute(QueryWithParameters, parameters).ToList();
+            nox.Execute<TestEntity>(TestableNox.QueryWithParameters, parameters).ToList();
 
             // Assert
             nox.MockNoxProvider
@@ -73,7 +69,7 @@ namespace Nox.Tests
         {
             // Arrange
             var nox = TestableNox.Create();
-            var parameters = new {FirstName = "John", LastName = "Doe"};
+            var parameters = new { TestFirstParameter = "FirstParameterValue", TestSecondParameter = "SecondParameterValue" };
             var mockCommand = new Mock<IDbCommand>();
             var mockParameterCollection = new Mock<IDataParameterCollection>();
 
@@ -88,12 +84,12 @@ namespace Nox.Tests
                .Setup(x => x.CreateParameters(It.IsAny<object>()))
                .Returns(new List<IDbDataParameter>
                    {
-                       new SqlParameter("@FirstName", "John"), 
-                       new SqlParameter("@LastName", "Doe")
+                       new SqlParameter("@TestFirstParameter", "FirstParameterValue"), 
+                       new SqlParameter("@TestSecondParameter", "SecondParameterValue")
                    });
             
             // Act
-            nox.Execute(QueryWithParameters, parameters).ToList();
+            nox.Execute<TestEntity>(TestableNox.QueryWithParameters, parameters).ToList();
 
             // Assert
             mockParameterCollection
@@ -113,7 +109,7 @@ namespace Nox.Tests
                .Returns(mockConnection.Object);
 
             // Act
-            nox.Execute(Query).ToList();
+            nox.Execute<TestEntity>(TestableNox.Query).ToList();
 
             // Assert
             mockConnection.Verify(x => x.Open(), Times.Once());
@@ -131,7 +127,7 @@ namespace Nox.Tests
                .Returns(mockCommand.Object);
             
             // Act
-            nox.Execute(Query).ToList();
+            nox.Execute<TestEntity>(TestableNox.Query).ToList();
 
             // Assert
             mockCommand.Verify(x => x.ExecuteReader(), Times.Once());
@@ -152,7 +148,7 @@ namespace Nox.Tests
                .Returns(mockCommand.Object);
 
             // Act
-            IEnumerable<dynamic> results = nox.Execute(Query).ToList();
+            IEnumerable<dynamic> results = nox.Execute(TestableNox.Query).ToList();
 
             // Assert
             Assert.IsNotNull(results);
@@ -177,7 +173,7 @@ namespace Nox.Tests
                .Returns(mockCommand.Object);
 
             // Act
-            IEnumerable<TestEntity> results = nox.Execute<TestEntity>(Query).ToList();
+            IEnumerable<TestEntity> results = nox.Execute<TestEntity>(TestableNox.Query).ToList();
 
             // Assert
             TestEntity testEntity = results.First();
@@ -185,13 +181,29 @@ namespace Nox.Tests
             Assert.AreEqual(1, testEntity.TestPropertyInt);
             Assert.AreEqual("TestResult", testEntity.TestPropertyString);
         }
-    }
 
-    public interface INoxProvider
-    {
-        IDbConnection CreateConnection();
-        IDbCommand CreateCommand(string query, IDbConnection dbConnection);
-        IEnumerable<IDataParameter> CreateParameters(object parameters);
+        [Test]
+        public void QueryAndAnInvalidType_ThrowsAnException()
+        {
+            // Arrange
+            var nox = TestableNox.Create();
+            var mockDataReader = TestableNox.CreateDataReader();
+            var mockCommand = new Mock<IDbCommand>();
+
+            mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
+
+            nox.MockNoxProvider
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>()))
+               .Returns(mockCommand.Object);
+
+            // Act
+            var results = Assert.Throws<Exception>(() => nox.Execute<int>(query: TestableNox.Query).ToList());
+
+            // Assert
+            StringAssert.StartsWith(
+                "Can't map the results to the provided type, you can try to use dynamic as return type.",
+                results.Message);
+        }
     }
 
 //    public class SqlServerNoxProvider : INoxProvider
@@ -248,74 +260,4 @@ namespace Nox.Tests
 //            return expandoObject;
 //        }
 //    }
-
-    public class Nox
-    {
-        private readonly INoxProvider _provider;
-
-        public Nox(INoxProvider provider)
-        {
-            _provider = provider;
-        }
-
-        public IEnumerable<T> Execute<T>(string query, object parameters = null) where T : new()
-        {
-            using (IDbConnection connection = _provider.CreateConnection())
-            using (IDbCommand command = _provider.CreateCommand(query, connection))
-            {
-                AppendParameters(command, parameters);
-
-                connection.Open();
-                using (IDataReader reader = command.ExecuteReader())
-                {
-                    while (reader != null && reader.Read())
-                        yield return ComposeType<T>(reader);
-                }
-            }
-        }
-
-        public IEnumerable<dynamic> Execute(string query, object parameters = null)
-        {
-            using (IDbConnection connection = _provider.CreateConnection())
-            using (IDbCommand command = _provider.CreateCommand(query, connection))
-            {
-                AppendParameters(command, parameters);
-
-                connection.Open();
-                using (IDataReader reader = command.ExecuteReader())
-                {
-                    while (reader != null && reader.Read())
-                        yield return ComposeExpandoObject(reader);
-                }
-            }
-        }
-
-        private void AppendParameters(IDbCommand command, object parameters)
-        {
-            IEnumerable<IDataParameter> generatedParameters = _provider.CreateParameters(parameters);
-
-            foreach (IDataParameter parameter in generatedParameters)
-                command.Parameters.Add(parameter);
-        }
-
-        private static T ComposeType<T>(IDataReader reader) where T : new()
-        {
-            dynamic entity = new T();
-
-            for (int i = 0; i < reader.FieldCount; i++)
-                (typeof (T)).GetProperty(reader.GetName(i)).SetValue(entity, reader[i]);
-
-            return entity;
-        }
-
-        private static IDictionary<string, object> ComposeExpandoObject(IDataReader reader)
-        {
-            var expandoObject = new ExpandoObject() as IDictionary<string, object>;
-
-            for (int i = 0; i < reader.FieldCount; i++)
-                expandoObject.Add(reader.GetName(i), reader[i]);
-
-            return expandoObject;
-        }
-    }
 }
