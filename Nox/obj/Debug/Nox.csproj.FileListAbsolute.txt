@@ -1,5 +1,0 @@
-C:\Nox\Nox\bin\Debug\Nox.dll
-C:\Nox\Nox\bin\Debug\Nox.pdb
-C:\Nox\Nox\obj\Debug\Nox.csprojResolveAssemblyReference.cache
-C:\Nox\Nox\obj\Debug\Nox.dll
-C:\Nox\Nox\obj\Debug\Nox.pdb
