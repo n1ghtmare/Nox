@@ -28,7 +28,6 @@ namespace Nox
                 {
                     while (reader != null && reader.Read())
                     {
-                        // TODO -> need to optimize this bit here
                         if (typeof(T) == typeof(Object))
                             yield return (T)ComposeExpandoObject(reader);
                         else
@@ -40,7 +39,7 @@ namespace Nox
 
         public IEnumerable<dynamic> Execute(string query, object parameters = null, bool isStoredProcedure = false)
         {
-            return Execute<dynamic>(query, parameters).ToList();
+            return Execute<dynamic>(query, parameters, isStoredProcedure).ToList();
         }
 
         public T ExecuteScalar<T>(string query, object parameters = null, bool isStoredProcedure = false)
@@ -63,6 +62,7 @@ namespace Nox
                 command.Parameters.Add(parameter);
         }
 
+        
         private static T ComposeType<T>(IDataReader reader) where T : new()
         {
             Type currentType = typeof (T);
