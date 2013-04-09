@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Nox
 {
-    public class Nox
+    public class Nox : INox
     {
         private readonly INoxProvider _provider;
 

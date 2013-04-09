@@ -20,7 +20,7 @@ namespace Nox.Tests
             var nox = TestableNox.Create();
 
             // Act
-            nox.Execute<TestEntity>(TestableNox.Query).ToList();
+            Enumerable.ToList<TestEntity>(nox.Execute<TestEntity>(TestableNox.Query));
 
             // Assert
             nox.MockNoxProvider
@@ -39,7 +39,7 @@ namespace Nox.Tests
                .Returns(mockConnection.Object);
 
             // Act
-            nox.Execute<TestEntity>(TestableNox.Query).ToList();
+            Enumerable.ToList<TestEntity>(nox.Execute<TestEntity>(TestableNox.Query));
 
             // Assert
             nox.MockNoxProvider
@@ -56,7 +56,7 @@ namespace Nox.Tests
 
 
             // Act
-            nox.Execute<TestEntity>(TestableNox.QueryWithParameters, parameters).ToList();
+            Enumerable.ToList<TestEntity>(nox.Execute<TestEntity>(TestableNox.QueryWithParameters, parameters));
 
             // Assert
             nox.MockNoxProvider
@@ -89,7 +89,7 @@ namespace Nox.Tests
                    });
             
             // Act
-            nox.Execute<TestEntity>(TestableNox.QueryWithParameters, parameters).ToList();
+            Enumerable.ToList<TestEntity>(nox.Execute<TestEntity>(TestableNox.QueryWithParameters, parameters));
 
             // Assert
             mockParameterCollection
@@ -109,7 +109,7 @@ namespace Nox.Tests
                .Returns(mockConnection.Object);
 
             // Act
-            nox.Execute<TestEntity>(TestableNox.Query).ToList();
+            Enumerable.ToList<TestEntity>(nox.Execute<TestEntity>(TestableNox.Query));
 
             // Assert
             mockConnection.Verify(x => x.Open(), Times.Once());
@@ -127,7 +127,7 @@ namespace Nox.Tests
                .Returns(mockCommand.Object);
 
             // Act
-            nox.Execute<TestEntity>(TestableNox.Query).ToList();
+            Enumerable.ToList<TestEntity>(nox.Execute<TestEntity>(TestableNox.Query));
 
             // Assert
             mockCommand.Verify(x => x.ExecuteReader(), Times.Once());
@@ -148,7 +148,7 @@ namespace Nox.Tests
                .Returns(mockCommand.Object);
 
             // Act
-            IEnumerable<dynamic> results = nox.Execute(TestableNox.Query).ToList();
+            IEnumerable<dynamic> results = Enumerable.ToList<dynamic>(nox.Execute(TestableNox.Query));
 
             // Assert
             Assert.IsNotNull(results);
@@ -179,7 +179,7 @@ namespace Nox.Tests
                .Returns(mockCommand.Object);
 
             // Act
-            TestEntity testEntity = nox.Execute<TestEntity>(TestableNox.Query).ToList().First();
+            TestEntity testEntity = Enumerable.ToList<TestEntity>(nox.Execute<TestEntity>(TestableNox.Query)).First();
 
             // Assert
             Assert.AreEqual(DateTime.Today, testEntity.TestPropertyDateTime);
@@ -202,7 +202,7 @@ namespace Nox.Tests
                .Returns(mockCommand.Object);
 
             // Act
-            TestEntity testEntity = nox.Execute<TestEntity>(TestableNox.Query).ToList().First();
+            TestEntity testEntity = Enumerable.ToList<TestEntity>(nox.Execute<TestEntity>(TestableNox.Query)).First();
 
             // Assert
             Assert.AreEqual(DateTime.Today, testEntity.TestPropertyDateTime);
@@ -225,7 +225,7 @@ namespace Nox.Tests
                .Returns(mockCommand.Object);
 
             // Act
-            var results = Assert.Throws<Exception>(() => nox.Execute<int>(query: TestableNox.Query).ToList());
+            var results = Assert.Throws<Exception>(() => Enumerable.ToList<int>(nox.Execute<int>(query: TestableNox.Query)));
 
             // Assert
             StringAssert.StartsWith(
