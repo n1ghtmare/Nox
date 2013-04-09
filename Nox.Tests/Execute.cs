@@ -18,7 +18,7 @@ namespace Nox.Tests
         {
             // Arrange
             var nox = TestableNox.Create();
-            
+
             // Act
             nox.Execute<TestEntity>(TestableNox.Query).ToList();
 
@@ -43,7 +43,7 @@ namespace Nox.Tests
 
             // Assert
             nox.MockNoxProvider
-               .Verify(x => x.CreateCommand(TestableNox.Query, mockConnection.Object, false),
+               .Verify(x => x.CreateCommand(TestableNox.Query, mockConnection.Object, (CommandType)0),
                        Times.Once());
         }
 
@@ -77,7 +77,7 @@ namespace Nox.Tests
                        .Returns(mockParameterCollection.Object);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType)0))
                .Returns(mockCommand.Object);
 
             nox.MockNoxProvider
@@ -123,9 +123,9 @@ namespace Nox.Tests
             var mockCommand = new Mock<IDbCommand>();
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType)0))
                .Returns(mockCommand.Object);
-            
+
             // Act
             nox.Execute<TestEntity>(TestableNox.Query).ToList();
 
@@ -144,7 +144,7 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType)0))
                .Returns(mockCommand.Object);
 
             // Act
@@ -175,7 +175,7 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType)0))
                .Returns(mockCommand.Object);
 
             // Act
@@ -198,7 +198,7 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType)0))
                .Returns(mockCommand.Object);
 
             // Act
@@ -221,7 +221,7 @@ namespace Nox.Tests
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
             nox.MockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), false))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType)0))
                .Returns(mockCommand.Object);
 
             // Act

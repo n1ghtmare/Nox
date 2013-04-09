@@ -16,10 +16,25 @@ namespace Nox
             _provider = provider;
         }
 
-        public IEnumerable<T> Execute<T>(string query, object parameters = null, bool isStoredProcedure = false) where T : new()
+        public IEnumerable<T> Execute<T>(string query) where T : new()
+        {
+            return Execute<T>(query, null, (CommandType)0);
+        }
+
+        public IEnumerable<T> Execute<T>(string query, object parameters) where T : new()
+        {
+            return Execute<T>(query, parameters, (CommandType) 0);
+        }
+
+        public IEnumerable<T> Execute<T>(string query, CommandType commandType) where T : new()
+        {
+            return Execute<T>(query, null, commandType);
+        }
+        
+        public IEnumerable<T> Execute<T>(string query, object parameters, CommandType commandType) where T : new()
         {
             using (IDbConnection connection = _provider.CreateConnection())
-            using (IDbCommand command = _provider.CreateCommand(query, connection, isStoredProcedure))
+            using (IDbCommand command = _provider.CreateCommand(query, connection, commandType))
             {
                 AppendParameters(command, parameters);
 
@@ -37,15 +52,45 @@ namespace Nox
             }
         }
 
-        public IEnumerable<dynamic> Execute(string query, object parameters = null, bool isStoredProcedure = false)
+        public IEnumerable<dynamic> Execute(string query)
         {
-            return Execute<dynamic>(query, parameters, isStoredProcedure).ToList();
+            return Execute(query, null, (CommandType) 0);
         }
 
-        public T ExecuteScalar<T>(string query, object parameters = null, bool isStoredProcedure = false)
+        public IEnumerable<dynamic> Execute(string query, object parameters)
+        {
+            return Execute(query, parameters, (CommandType) 0);
+        }
+
+        public IEnumerable<dynamic> Execute(string query, CommandType commandType)
+        {
+            return Execute(query, null, commandType);
+        }
+
+        public IEnumerable<dynamic> Execute(string query, object parameters, CommandType commandType)
+        {
+            return Execute<dynamic>(query, parameters, commandType).ToList();
+        }
+
+        public T ExecuteScalar<T>(string query)
+        {
+            return ExecuteScalar<T>(query, null, (CommandType) 0);
+        }
+
+        public T ExecuteScalar<T>(string query, object parameters)
+        {
+            return ExecuteScalar<T>(query, parameters, (CommandType) 0);
+        }
+
+        public T ExecuteScalar<T>(string query, CommandType commandType)
+        {
+            return ExecuteScalar<T>(query, null, commandType);
+        }
+
+        public T ExecuteScalar<T>(string query, object parameters, CommandType commandType)
         {
             using (IDbConnection connection = _provider.CreateConnection())
-            using (IDbCommand command = _provider.CreateCommand(query, connection, isStoredProcedure))
+            using (IDbCommand command = _provider.CreateCommand(query, connection, commandType))
             {
                 AppendParameters(command, parameters);
 
@@ -62,7 +107,6 @@ namespace Nox
                 command.Parameters.Add(parameter);
         }
 
-        
         private static T ComposeType<T>(IDataReader reader) where T : new()
         {
             Type currentType = typeof (T);

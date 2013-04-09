@@ -24,12 +24,12 @@ namespace Nox
             return new SqlConnection(_connectionString);
         }
 
-        public IDbCommand CreateCommand(string query, IDbConnection connection, bool isStoredProcedure)
+        public IDbCommand CreateCommand(string query, IDbConnection connection, CommandType commandType)
         {
-            var command = new SqlCommand(query, connection as SqlConnection);
-            
-            if(isStoredProcedure)
-                command.CommandType = CommandType.StoredProcedure;
+            var command = new SqlCommand(query, connection as SqlConnection)
+            {
+                CommandType = commandType
+            };
 
             return command;
         }

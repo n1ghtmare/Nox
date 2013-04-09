@@ -6,7 +6,7 @@ namespace Nox
     public interface INoxProvider
     {
         IDbConnection CreateConnection();
-        IDbCommand CreateCommand(string query, IDbConnection connection, bool isStoredProcedure);
+        IDbCommand CreateCommand(string query, IDbConnection connection, CommandType commandType);
         IEnumerable<IDataParameter> CreateParameters(object parameters);
     }
 }
