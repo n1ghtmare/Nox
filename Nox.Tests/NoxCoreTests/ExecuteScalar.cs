@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 using Nox.Tests.Helpers;
 
-namespace Nox.Tests
+namespace Nox.Tests.NoxCoreTests
 {
     [TestFixture]
     public class ExecuteScalar

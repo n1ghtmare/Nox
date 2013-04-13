@@ -44,9 +44,10 @@
   <ItemGroup>
     <Compile Include="Helpers\TestableNoxGenericRepository.cs" />
     <Compile Include="NoxGenericRepositoryTests\Create.cs" />
-    <Compile Include="Execute.cs" />
-    <Compile Include="ExecuteScalar.cs" />
+    <Compile Include="NoxCoreTests\Execute.cs" />
+    <Compile Include="NoxCoreTests\ExecuteScalar.cs" />
     <Compile Include="Helpers\TestEntity.cs" />
+    <Compile Include="NoxGenericRepositoryTests\GetAll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\TestableNox.cs" />
   </ItemGroup>
