@@ -14,7 +14,6 @@ namespace Nox
             _nox = nox;
         }
 
-
         public IEnumerable<T> GetAll()
         {
             string selectQuery = ComposeSelectQuery();
@@ -29,9 +28,8 @@ namespace Nox
 
             foreach (var property in entityType.GetProperties())
                 queryColumns.AppendFormat("{0}, ", property.Name);
-            string queryColumnsFlat = FlattenQuerySegments(queryColumns);
 
-            return string.Format("SELECT {0} FROM {1}", queryColumnsFlat, (typeof(T)).Name);
+            return string.Format("SELECT {0} FROM {1}", FlattenQuerySegments(queryColumns), entityType.Name);
         }
 
         public IEnumerable<T> Get(string where)
@@ -59,38 +57,29 @@ namespace Nox
 
             foreach (var property in entityType.GetProperties())
             {
-                if (IncludeColumnInQuery(entity, property))
+                if (IsUsedInInsertQuery(entity, property))
                 {
                     queryColumns.AppendFormat("{0}, ", property.Name);
                     queryValues.AppendFormat("@{0}, ", property.Name);
                 }
             }
-            string queryColumnsFlat = FlattenQuerySegments(queryColumns);
-            string queryValuesFlat  = FlattenQuerySegments(queryValues);
-            
             return string.Format("INSERT INTO {0} ({1}) VALUES ({2})",
-                                 entityType.Name,
-                                 queryColumnsFlat,
-                                 queryValuesFlat);
+                                 entityType.Name, FlattenQuerySegments(queryColumns), FlattenQuerySegments(queryValues));
         }
 
-        private bool IncludeColumnInQuery(T entity, PropertyInfo property)
+        private bool IsUsedInInsertQuery(T entity, PropertyInfo property)
         {
-            string primaryKey = "TestId"; // TODO - determine the primary key in the initialization
-            if (property.Name == primaryKey)
+            // TODO - move the primary key checkup in the constructor
+            if (property.Name == "Id" ||
+                property.Name == string.Format("{0}Id", typeof(T).Name) ||
+                property.Name == string.Format("{0}Guid", typeof(T).Name))
             {
                 var propertyValue = property.GetValue(entity, null);
 
-                if (propertyValue == null || propertyValue.ToString() == "0")
+                if ((propertyValue == null || propertyValue.ToString() == "0") || 
+                    (propertyValue is Guid && (Guid) propertyValue == Guid.Empty))
                     return false;
-                
-                if (propertyValue is Guid)
-                {
-                    if ((Guid) propertyValue == Guid.Empty)
-                        return false;
-                }
             }
-
             return true;
         }
 

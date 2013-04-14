@@ -1,20 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" total="2" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-13" time="20:59:48">
+<test-results name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" total="6" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-14" time="18:35:47">
   <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5444" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.2\bin" machine-name="STTIKR64" user="nightmare" user-domain="STTIKR64" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" executed="True" result="Success" success="True" time="0.533" asserts="0">
+  <test-suite type="Assembly" name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" executed="True" result="Success" success="True" time="0.584" asserts="0">
     <results>
-      <test-suite type="Namespace" name="Nox" executed="True" result="Success" success="True" time="0.515" asserts="0">
+      <test-suite type="Namespace" name="Nox" executed="True" result="Success" success="True" time="0.563" asserts="0">
         <results>
-          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="0.515" asserts="0">
+          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="0.563" asserts="0">
             <results>
-              <test-suite type="Namespace" name="NoxGenericRepositoryTests" executed="True" result="Success" success="True" time="0.515" asserts="0">
+              <test-suite type="Namespace" name="NoxGenericRepositoryTests" executed="True" result="Success" success="True" time="0.563" asserts="0">
                 <results>
-                  <test-suite type="TestFixture" name="Create" executed="True" result="Success" success="True" time="0.512" asserts="0">
+                  <test-suite type="TestFixture" name="Create" executed="True" result="Success" success="True" time="0.560" asserts="0">
                     <results>
-                      <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery" executed="True" result="Success" success="True" time="0.491" asserts="0" />
+                      <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery" executed="True" result="Success" success="True" time="0.509" asserts="0" />
                       <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.EntityWithPrimaryKeyButNoValueProvided_CallsNoxExecuteWithInsertQueryOmittingThePrimaryKeyColumn" executed="True" result="Success" success="True" time="0.005" asserts="0" />
+                      <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.EntityWithPrimaryKeyColumnNamedId_CallsNoxExecuteInsertQueryOmittingThePrimaryKey" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                      <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.EntityWithPrimaryKeyOfTypeGuidThatIsEmpty_CallsNoxExecuteWithInsertQueryOmittingTheGuidPrimaryKeyColumn" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                      <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.EntityWithPrimaryKeyOfTypeGuidThatIsNotEmpty_CallsNoxExecuteWithInsertQueryIncludingTheGuidPrimaryKey" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                      <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.EntityWithPrimaryKeyThatHasADifferentName_CallsNoxExecuteInsertQueryOmittingThePrimaryKey" executed="True" result="Success" success="True" time="0.004" asserts="0" />
                     </results>
                   </test-suite>
                 </results>

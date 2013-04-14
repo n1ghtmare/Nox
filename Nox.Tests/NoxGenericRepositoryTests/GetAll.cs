@@ -15,7 +15,7 @@ namespace Nox.Tests.NoxGenericRepositoryTests
         {
             // Arrange
             var noxGenericRepository = TestableNoxGenericRepository.Create();
-            var expectedSqlQuery = "SELECT TestId, TestPropertyString, TestPropertyInt, TestPropertyDateTime FROM TestEntity";
+            var expectedSqlQuery = "SELECT TestEntityId, TestPropertyString, TestPropertyInt, TestPropertyDateTime FROM TestEntity";
 
             // Act
             IEnumerable<TestEntity> results = noxGenericRepository.GetAll();
