@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nox.Tests.Helpers
+namespace Nox.Tests.Helpers.Entities
 {
     public class TestEntity
     {

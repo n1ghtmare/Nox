@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 
 using Nox.Tests.Helpers;
+using Nox.Tests.Helpers.Entities;
 
 namespace Nox.Tests.NoxGenericRepositoryTests
 {
@@ -144,27 +145,6 @@ namespace Nox.Tests.NoxGenericRepositoryTests
             // Assert
             nox.Verify(x => x.Execute(expectedSqlQuery, fakeEntity),
                        Times.Once());
-        }
-
-        internal class TestEntityWithGuid
-        {
-            public Guid TestEntityWithGuidId { get; set; }
-            public string TestPropertyString { get; set; }
-            public int TestPropertyInt { get; set; }
-        }
-
-        internal class TestEntityWithDifferentIdColumnName
-        {
-            public int TestEntityWithDifferentIdColumnNameId { get; set; }
-            public string TestPropertyString { get; set; }
-            public int TestPropertyInt { get; set; }
-        }
-
-        internal class TestEntityWithIdColumnName
-        {
-            public int Id { get; set; }
-            public string TestPropertyString { get; set; }
-            public int TestPropertyInt { get; set; }
         }
     }
 }

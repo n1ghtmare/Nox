@@ -1,4 +1,5 @@
 using Moq;
+using Nox.Tests.Helpers.Entities;
 
 namespace Nox.Tests.Helpers
 {

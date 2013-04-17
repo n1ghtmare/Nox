@@ -93,7 +93,6 @@ namespace Nox
             return flatParams.Substring(0, flatParams.Length - 1);
         }
 
-
         public void Update(T entity)
         {
             throw new NotImplementedException();
@@ -101,9 +100,8 @@ namespace Nox
 
         public void Delete(T entity)
         {
-            string deleteQuery = string.Format("DELETE FROM TestEntity WHERE TestId = @TestId");
-
-            _nox.Execute(deleteQuery, entity);
+            // TODO ...
+            _nox.Execute("DELETE FROM TestEntity WHERE TestEntityId = @TestEntityId", entity);
         }
     }
 }

@@ -8,6 +8,7 @@ using Moq;
 using NUnit.Framework;
 
 using Nox.Tests.Helpers;
+using Nox.Tests.Helpers.Entities;
 
 namespace Nox.Tests.NoxCoreTests
 {
