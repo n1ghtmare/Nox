@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 using Moq;
 using NUnit.Framework;
 
-using Nox.Tests.Helpers;
 using Nox.Tests.Helpers.Entities;
 
 namespace Nox.Tests.NoxGenericRepositoryTests
@@ -11,140 +12,93 @@ namespace Nox.Tests.NoxGenericRepositoryTests
     [TestFixture]
     public class Create
     {
-        [Test]
-        public void Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery()
+        [Test, TestCaseSource("InsertTestCases")]
+        public void Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(object entity, string expectedQuery)
         {
             // Arrange
-            var noxGenericRepository = TestableNoxGenericRepository.Create();
-            var fakeEntity = new TestEntity
-            {
-                TestEntityId = 123,
-                TestPropertyDateTime = DateTime.Today,
-                TestPropertyInt = 1,
-                TestPropertyString = "TEST_STRING"
-            };
+            Type genericClass = typeof (NoxGenericRepository<>);
+            Type constructedClass = genericClass.MakeGenericType(entity.GetType());
 
-            var expectedSqlQuery = "INSERT INTO TestEntity (TestEntityId, TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestEntityId, @TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)";
+            var mockNox = new Mock<INox>();
+            var noxGenericRepository = Activator.CreateInstance(constructedClass, mockNox.Object);
 
             // Act
-            noxGenericRepository.Create(fakeEntity);
+            MethodInfo method = constructedClass.GetMethod("Create");
+            method.Invoke(noxGenericRepository, new[] { entity });
 
             // Assert
-            noxGenericRepository.MockNox
-                                .Verify(x => x.Execute(expectedSqlQuery, fakeEntity),
-                                        Times.Once());
+            mockNox.Verify(x => x.Execute(expectedQuery, entity),
+                           Times.Once());
         }
 
-        [Test]
-        public void EntityWithPrimaryKeyButNoValueProvided_CallsNoxExecuteWithInsertQueryOmittingThePrimaryKeyColumn()
+        private static IEnumerable<TestCaseData> InsertTestCases
         {
-            // Arrange
-            var noxGenericRepository = TestableNoxGenericRepository.Create();
-            var fakeEntity = new TestEntity
+            get
             {
-                TestPropertyDateTime = DateTime.Today,
-                TestPropertyInt = 1,
-                TestPropertyString = "TEST_STRING"
-            };
+                var testPropertyString   = "TEST_STRING";
+                var testPropertyInt      = 1;
+                var testPropertyDateTime = DateTime.Today;
+                var testEntityId         = 123;
+                var testEntityGuid       = Guid.NewGuid();
 
-            var expectedSqlQuery = "INSERT INTO TestEntity (TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)";
+                yield return new TestCaseData(
+                    new TestEntity1
+                    {
+                        TestEntity1Id        = testEntityId,
+                        TestPropertyDateTime = testPropertyDateTime,
+                        TestPropertyInt      = testPropertyInt,
+                        TestPropertyString   = testPropertyString
+                    },
+                    "INSERT INTO TestEntity1 (TestEntity1Id, TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestEntity1Id, @TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)");
 
-            // Act
-            noxGenericRepository.Create(fakeEntity);
+                yield return new TestCaseData(
+                    new TestEntity1
+                    {
+                        TestPropertyDateTime = testPropertyDateTime,
+                        TestPropertyInt      = testPropertyInt,
+                        TestPropertyString   = testPropertyString
+                    },
+                    "INSERT INTO TestEntity1 (TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)");
 
-            // Assert
-            noxGenericRepository.MockNox
-                                .Verify(x => x.Execute(expectedSqlQuery, fakeEntity),
-                                        Times.Once());
+                yield return new TestCaseData(
+                    new TestEntity2
+                    {
+                        TestPropertyDateTime = testPropertyDateTime,
+                        TestPropertyInt      = testPropertyInt,
+                        TestPropertyString   = testPropertyString
+                    },
+                    "INSERT INTO TestEntity2 (TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)");
+                
+                yield return new TestCaseData(
+                    new TestEntity2
+                    {
+                        TestEntity2Guid      = testEntityGuid,
+                        TestPropertyDateTime = testPropertyDateTime,
+                        TestPropertyInt      = testPropertyInt,
+                        TestPropertyString   = testPropertyString
+                    },
+                    "INSERT INTO TestEntity2 (TestEntity2Guid, TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestEntity2Guid, @TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)");
+                
+                yield return new TestCaseData(
+                    new TestEntity3
+                    {
+                        TestPropertyDateTime = testPropertyDateTime,
+                        TestPropertyInt      = testPropertyInt,
+                        TestPropertyString   = testPropertyString
+                    },
+                    "INSERT INTO TestEntity3 (TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)");
+                
+                yield return new TestCaseData(
+                    new TestEntity3
+                    {
+                        Id                   = testEntityId,
+                        TestPropertyDateTime = testPropertyDateTime,
+                        TestPropertyInt      = testPropertyInt,
+                        TestPropertyString   = testPropertyString
+                    },
+                    "INSERT INTO TestEntity3 (Id, TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@Id, @TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)");
+            }
         }
-
-        [Test]
-        public void EntityWithPrimaryKeyOfTypeGuidThatIsEmpty_CallsNoxExecuteWithInsertQueryOmittingTheGuidPrimaryKeyColumn()
-        {
-            // Arrange
-            var nox = new Mock<INox>();
-            var noxGenericRepository = new NoxGenericRepository<TestEntityWithGuid>(nox.Object);
-            var fakeEntity = new TestEntityWithGuid
-            {
-                TestPropertyInt = 0,
-                TestPropertyString = "TEST_STRING"
-            };
-
-            var expectedSqlQuery = "INSERT INTO TestEntityWithGuid (TestPropertyString, TestPropertyInt) VALUES (@TestPropertyString, @TestPropertyInt)";
-
-            // Act
-            noxGenericRepository.Create(fakeEntity);
-
-            // Assert
-            nox.Verify(x => x.Execute(expectedSqlQuery, fakeEntity),
-                       Times.Once());
-        }
-
-        [Test]
-        public void EntityWithPrimaryKeyOfTypeGuidThatIsNotEmpty_CallsNoxExecuteWithInsertQueryIncludingTheGuidPrimaryKey()
-        {
-            // Arrange
-            var nox = new Mock<INox>();
-            var noxGenericRepository = new NoxGenericRepository<TestEntityWithGuid>(nox.Object);
-            var fakeEntity = new TestEntityWithGuid
-            {
-                TestEntityWithGuidId = Guid.NewGuid(),
-                TestPropertyInt = 0,
-                TestPropertyString = "TEST_STRING"
-            };
-
-            var expectedSqlQuery = "INSERT INTO TestEntityWithGuid (TestEntityWithGuidId, TestPropertyString, TestPropertyInt) VALUES (@TestEntityWithGuidId, @TestPropertyString, @TestPropertyInt)";
-
-            // Act
-            noxGenericRepository.Create(fakeEntity);
-
-            // Assert
-            nox.Verify(x => x.Execute(expectedSqlQuery, fakeEntity),
-                       Times.Once());
-        }
-
-        [Test]
-        public void EntityWithPrimaryKeyThatHasADifferentName_CallsNoxExecuteInsertQueryOmittingThePrimaryKey()
-        {
-            // Arrange
-            var nox = new Mock<INox>();
-            var noxGenericRepository = new NoxGenericRepository<TestEntityWithDifferentIdColumnName>(nox.Object);
-            var fakeEntity = new TestEntityWithDifferentIdColumnName
-            {
-                TestPropertyInt = 0,
-                TestPropertyString = "TEST_STRING"
-            };
-
-            var expectedSqlQuery = "INSERT INTO TestEntityWithDifferentIdColumnName (TestPropertyString, TestPropertyInt) VALUES (@TestPropertyString, @TestPropertyInt)";
-
-            // Act
-            noxGenericRepository.Create(fakeEntity);
-
-            // Assert
-            nox.Verify(x => x.Execute(expectedSqlQuery, fakeEntity),
-                       Times.Once());
-        }
-
-        [Test]
-        public void EntityWithPrimaryKeyColumnNamedId_CallsNoxExecuteInsertQueryOmittingThePrimaryKey()
-        {
-            // Arrange
-            var nox = new Mock<INox>();
-            var noxGenericRepository = new NoxGenericRepository<TestEntityWithIdColumnName>(nox.Object);
-            var fakeEntity = new TestEntityWithIdColumnName
-            {
-                TestPropertyInt = 0,
-                TestPropertyString = "TEST_STRING"
-            };
-
-            var expectedSqlQuery = "INSERT INTO TestEntityWithIdColumnName (TestPropertyString, TestPropertyInt) VALUES (@TestPropertyString, @TestPropertyInt)";
-
-            // Act
-            noxGenericRepository.Create(fakeEntity);
-
-            // Assert
-            nox.Verify(x => x.Execute(expectedSqlQuery, fakeEntity),
-                       Times.Once());
-        }
+        
     }
 }

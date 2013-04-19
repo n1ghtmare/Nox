@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Moq;
 using NUnit.Framework;
@@ -16,16 +18,32 @@ namespace Nox.Tests.NoxGenericRepositoryTests
         public void Entity_CallsNoxExecuteWithCorrectlyComposedSelectQuery()
         {
             // Arrange
-            var noxGenericRepository = TestableNoxGenericRepository.Create();
-            var expectedSqlQuery = "SELECT TestEntityId, TestPropertyString, TestPropertyInt, TestPropertyDateTime FROM TestEntity";
+            var mockNox = new Mock<INox>();
+            var noxGenericRepository = new NoxGenericRepository<TestEntity1>(mockNox.Object);
+            var expectedSqlQuery = "SELECT TestEntity1Id, TestPropertyString, TestPropertyInt, TestPropertyDateTime FROM TestEntity1";
 
             // Act
             noxGenericRepository.GetAll();
 
             // Assert
-            noxGenericRepository.MockNox
-                                .Verify(x => x.Execute<TestEntity>(expectedSqlQuery),
-                                        Times.Once());
+            mockNox.Verify(x => x.Execute<TestEntity1>(expectedSqlQuery),
+                           Times.Once());
+        }
+
+        [Test]
+        public void EntityWithDifferentNameAndProperties_CallsNoxExecuteWithCorrectlyComposedSelectQuery()
+        {
+            // Arrange
+            var mockNox = new Mock<INox>();
+            var noxGenericRepository = new NoxGenericRepository<TestEntity2>(mockNox.Object);
+            var expectedSqlQuery = "SELECT TestEntity2Guid, TestPropertyString, TestPropertyInt, TestPropertyDateTime FROM TestEntity2";
+
+            // Act
+            noxGenericRepository.GetAll();
+
+            // Assert
+            mockNox.Verify(x => x.Execute<TestEntity2>(expectedSqlQuery),
+                           Times.Once());
         }
 
         [Test]
@@ -35,14 +53,15 @@ namespace Nox.Tests.NoxGenericRepositoryTests
             var noxGenericRepository = TestableNoxGenericRepository.Create();
 
             noxGenericRepository.MockNox
-                                .Setup(x => x.Execute<TestEntity>(It.IsAny<string>()))
-                                .Returns(new List<TestEntity> { new TestEntity(), new TestEntity() });
+                                .Setup(x => x.Execute<TestEntity1>(It.IsAny<string>()))
+                                .Returns(new List<TestEntity1> { new TestEntity1(), new TestEntity1() });
 
             // Act
-            IEnumerable<TestEntity> results = noxGenericRepository.GetAll();
+            IEnumerable<TestEntity1> results = noxGenericRepository.GetAll();
 
             // Assert
             Assert.AreEqual(2, results.Count());
         }
+
     }
 }

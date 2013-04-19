@@ -42,14 +42,15 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Entities\TestEntity4.cs" />
+    <Compile Include="Helpers\Entities\TestEntityBase.cs" />
     <Compile Include="Helpers\TestableNoxGenericRepository.cs" />
-    <Compile Include="Helpers\Entities\TestEntityWithDifferentIdColumnName.cs" />
-    <Compile Include="Helpers\Entities\TestEntityWithGuid.cs" />
-    <Compile Include="Helpers\Entities\TestEntityWithIdColumnName.cs" />
+    <Compile Include="Helpers\Entities\TestEntity2.cs" />
+    <Compile Include="Helpers\Entities\TestEntity3.cs" />
     <Compile Include="NoxGenericRepositoryTests\Create.cs" />
     <Compile Include="NoxCoreTests\Execute.cs" />
     <Compile Include="NoxCoreTests\ExecuteScalar.cs" />
-    <Compile Include="Helpers\Entities\TestEntity.cs" />
+    <Compile Include="Helpers\Entities\TestEntity1.cs" />
     <Compile Include="NoxGenericRepositoryTests\Delete.cs" />
     <Compile Include="NoxGenericRepositoryTests\GetAll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

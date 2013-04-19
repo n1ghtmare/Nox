@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+
 using Moq;
 using NUnit.Framework;
 
-using Nox.Tests.Helpers;
 using Nox.Tests.Helpers.Entities;
 
 namespace Nox.Tests.NoxGenericRepositoryTests
@@ -12,29 +12,6 @@ namespace Nox.Tests.NoxGenericRepositoryTests
     [TestFixture]
     public class Delete
     {
-        [Test]
-        public void EntityAPrimaryKey_CallsNoxExecuteWithCorrectlyGeneratedSqlQuery()
-        {
-            // Arrange
-            var noxGenericRepository = TestableNoxGenericRepository.Create();
-            var fakeEntity = new TestEntity
-            {
-                TestEntityId = 123,
-                TestPropertyDateTime = DateTime.Today,
-                TestPropertyInt = 1,
-                TestPropertyString = "TEST_STRING"
-            };
-            var expectedSqlQuery = "DELETE FROM TestEntity WHERE TestEntityId = @TestEntityId";
-
-            // Act
-            noxGenericRepository.Delete(fakeEntity);
-
-            // Assert
-            noxGenericRepository.MockNox
-                .Verify(x => x.Execute(expectedSqlQuery, fakeEntity), 
-                Times.Once());
-        }
-
         [Test, TestCaseSource("DeleteTestCases")]
         public void Entity_CallsNoxExecuteWithCorrectlyGeneratedSqlQuery(object entity, string expectedQuery)
         {
@@ -49,39 +26,63 @@ namespace Nox.Tests.NoxGenericRepositoryTests
             MethodInfo method = constructedClass.GetMethod("Delete");
             method.Invoke(noxGenericRepository, new[] { entity });
 
-
             // Assert
             mockNox.Verify(x => x.Execute(expectedQuery, entity),
                 Times.Once());
+        }
+
+        [Test]
+        public void EntityWithNoPrimaryKey_ThrowsAnException()
+        {
+            // Arrange
+            var mockNox = new Mock<INox>();
+            var noxGenericRepository = new NoxGenericRepository<TestEntity4>(mockNox.Object);
+            var fakeEntity = new TestEntity4();
+            
+            // Act
+            var exception = Assert.Throws<Exception>(() => noxGenericRepository.Delete(fakeEntity));
+
+            // Assert
+            Assert.AreEqual(exception.Message, "Can't compose a delete query - unable to detect primary key");
         }
 
         private static IEnumerable<TestCaseData> DeleteTestCases
         {
             get
             {
-                string testPropertyString     = "TEST_STRING";
-                int testPropertyInt           = 1;
-                DateTime testPropertyDateTime = DateTime.Today;
-                int testEntityId              = 123;
+                var testPropertyString   = "TEST_STRING";
+                var testPropertyInt      = 1;
+                var testPropertyDateTime = DateTime.Today;
+                var testEntityId         = 123;
+                var testEntityGuid       = Guid.NewGuid();
 
                 yield return new TestCaseData(
-                    new TestEntity
+                    new TestEntity1
                     {
-                        TestEntityId         = testEntityId,
+                        TestEntity1Id        = testEntityId,
                         TestPropertyDateTime = testPropertyDateTime,
                         TestPropertyInt      = testPropertyInt,
                         TestPropertyString   = testPropertyString
-                    }, 
-                    "DELETE FROM TestEntity WHERE TestEntityId = @TestEntityId");
+                    },
+                    "DELETE FROM TestEntity1 WHERE TestEntity1Id = @TestEntity1Id");
 
                 yield return new TestCaseData(
-                    new TestEntityWithDifferentIdColumnName
+                    new TestEntity2
                     {
-                        TestEntityWithDifferentIdColumnNameId = testEntityId,
-                        TestPropertyInt = testPropertyInt,
+                        TestEntity2Guid    = testEntityGuid,
+                        TestPropertyInt    = testPropertyInt,
                         TestPropertyString = testPropertyString
                     },
-                    "DELETE FROM TestEntityWithDifferentIdColumnName WHERE TestEntityWithDifferentIdColumnNameId = @TestEntityWithDifferentIdColumnNameId");
+                    "DELETE FROM TestEntity2 WHERE TestEntity2Guid = @TestEntity2Guid");
+
+                yield return new TestCaseData(
+                    new TestEntity3
+                    {
+                        Id                  = testEntityId,
+                        TestPropertyInt     = testPropertyInt,
+                        TestPropertyString  = testPropertyString
+                    },
+                    "DELETE FROM TestEntity3 WHERE Id = @Id");
             }
         }
     }

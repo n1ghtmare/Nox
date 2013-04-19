@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -8,10 +9,21 @@ namespace Nox
     public class NoxGenericRepository<T> : INoxGenericRepository<T> where T : class, new()
     {
         private readonly INox _nox;
+        private readonly PropertyInfo _primaryKeyProperty;
 
         public NoxGenericRepository(INox nox)
         {
             _nox = nox;
+            _primaryKeyProperty = GetPrimaryKeyProperty();
+        }
+
+        private static PropertyInfo GetPrimaryKeyProperty()
+        {
+            Type entityType = typeof (T);
+            return entityType.GetProperties().FirstOrDefault(
+                property => property.Name == "Id" ||
+                            property.Name == string.Format("{0}Id", entityType.Name) ||
+                            property.Name == string.Format("{0}Guid", entityType.Name));
         }
 
         public IEnumerable<T> GetAll()
@@ -55,13 +67,10 @@ namespace Nox
             var queryValues  = new StringBuilder();
             Type entityType  = entity.GetType();
 
-            foreach (var property in entityType.GetProperties())
+            foreach (var property in entityType.GetProperties().Where(property => IsUsedInInsertQuery(entity, property)))
             {
-                if (IsUsedInInsertQuery(entity, property))
-                {
-                    queryColumns.AppendFormat("{0}, ", property.Name);
-                    queryValues.AppendFormat("@{0}, ", property.Name);
-                }
+                queryColumns.AppendFormat("{0}, ", property.Name);
+                queryValues.AppendFormat("@{0}, ", property.Name);
             }
             return string.Format("INSERT INTO {0} ({1}) VALUES ({2})",
                                  entityType.Name, FlattenQuerySegments(queryColumns), FlattenQuerySegments(queryValues));
@@ -69,13 +78,9 @@ namespace Nox
 
         private bool IsUsedInInsertQuery(T entity, PropertyInfo property)
         {
-            // TODO - move the primary key checkup in the constructor
-            if (property.Name == "Id" ||
-                property.Name == string.Format("{0}Id", typeof(T).Name) ||
-                property.Name == string.Format("{0}Guid", typeof(T).Name))
+            if (property == _primaryKeyProperty)
             {
                 var propertyValue = property.GetValue(entity, null);
-
                 if ((propertyValue == null || propertyValue.ToString() == "0") || 
                     (propertyValue is Guid && (Guid) propertyValue == Guid.Empty))
                     return false;
@@ -86,10 +91,6 @@ namespace Nox
         private string FlattenQuerySegments(StringBuilder queryParameters)
         {
             string flatParams = queryParameters.ToString().Trim();
-
-            if (string.IsNullOrEmpty(flatParams))
-                throw new Exception("Query parameters can't be empty, make sure your entity has properties");
-
             return flatParams.Substring(0, flatParams.Length - 1);
         }
 
@@ -100,8 +101,18 @@ namespace Nox
 
         public void Delete(T entity)
         {
-            // TODO ...
-            _nox.Execute("DELETE FROM TestEntity WHERE TestEntityId = @TestEntityId", entity);
+            var deleteQuery = ComposeDeleteQuery();
+
+            _nox.Execute(deleteQuery, entity);
+        }
+
+        private string ComposeDeleteQuery()
+        {
+            if (_primaryKeyProperty == null)
+                throw new Exception("Can't compose a delete query - unable to detect primary key");
+
+            return string.Format("DELETE FROM {0} WHERE {1} = @{1}",
+                                 typeof (T).Name, _primaryKeyProperty.Name);
         }
     }
 }

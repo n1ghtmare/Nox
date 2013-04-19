@@ -3,7 +3,7 @@ using Nox.Tests.Helpers.Entities;
 
 namespace Nox.Tests.Helpers
 {
-    public class TestableNoxGenericRepository : NoxGenericRepository<TestEntity>
+    public class TestableNoxGenericRepository : NoxGenericRepository<TestEntity1>
     {
         public Mock<INox> MockNox { get; set; }
 
