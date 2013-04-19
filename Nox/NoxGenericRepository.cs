@@ -64,8 +64,8 @@ namespace Nox
         private string ComposeInsertQuery(T entity)
         {
             var queryColumns = new StringBuilder();
-            var queryValues  = new StringBuilder();
-            Type entityType  = entity.GetType();
+            var queryValues = new StringBuilder();
+            Type entityType = entity.GetType();
 
             foreach (var property in entityType.GetProperties().Where(property => IsUsedInInsertQuery(entity, property)))
             {
@@ -96,7 +96,24 @@ namespace Nox
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            var updateQuery = ComposeUpdateQuery();
+
+            _nox.Execute(updateQuery, entity);
+        }
+
+        private string ComposeUpdateQuery()
+        {
+            if(_primaryKeyProperty == null)
+                throw new Exception("Can't compose an update query - unable to detect primary key");
+
+            var entityType = typeof(T);
+            var updateSegments = new StringBuilder();
+
+            foreach (var property in entityType.GetProperties().Where(property => property != _primaryKeyProperty))
+                updateSegments.AppendFormat("{0} = @{0}, ", property.Name);
+
+            return string.Format("UPDATE {0} SET {1} WHERE {2} = @{2}",
+                                            entityType.Name, FlattenQuerySegments(updateSegments), _primaryKeyProperty.Name);
         }
 
         public void Delete(T entity)

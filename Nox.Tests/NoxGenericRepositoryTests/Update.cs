@@ -10,10 +10,10 @@ using Nox.Tests.Helpers.Entities;
 namespace Nox.Tests.NoxGenericRepositoryTests
 {
     [TestFixture]
-    public class Delete
+    public class Update
     {
-        [Test, TestCaseSource("DeleteTestCases")]
-        public void Entity_CallsNoxExecuteWithCorrectlyGeneratedDeleteQuery(object entity, string expectedQuery)
+        [Test, TestCaseSource("UpdateTestCases")]
+        public void Entity_CallsNoxExecuteWithCorrectlyGeneratedUpdateQuery(object entity, string expectedQuery)
         {
             // Arrange
             Type genericClass = typeof (NoxGenericRepository<>);
@@ -23,12 +23,12 @@ namespace Nox.Tests.NoxGenericRepositoryTests
             var noxGenericRepository = Activator.CreateInstance(constructedClass, mockNox.Object);
 
             // Act
-            MethodInfo method = constructedClass.GetMethod("Delete");
-            method.Invoke(noxGenericRepository, new[] { entity });
+            MethodInfo method = constructedClass.GetMethod("Update");
+            method.Invoke(noxGenericRepository, new[] {entity});
 
             // Assert
             mockNox.Verify(x => x.Execute(expectedQuery, entity),
-                Times.Once());
+                           Times.Once());
         }
 
         [Test]
@@ -38,15 +38,15 @@ namespace Nox.Tests.NoxGenericRepositoryTests
             var mockNox = new Mock<INox>();
             var noxGenericRepository = new NoxGenericRepository<TestEntity4>(mockNox.Object);
             var fakeEntity = new TestEntity4();
-            
+
             // Act
-            var exception = Assert.Throws<Exception>(() => noxGenericRepository.Delete(fakeEntity));
+            var exception = Assert.Throws<Exception>(() => noxGenericRepository.Update(fakeEntity));
 
             // Assert
-            Assert.AreEqual(exception.Message, "Can't compose a delete query - unable to detect primary key");
+            Assert.AreEqual(exception.Message, "Can't compose an update query - unable to detect primary key");
         }
 
-        private static IEnumerable<TestCaseData> DeleteTestCases
+        private static IEnumerable<TestCaseData> UpdateTestCases
         {
             get
             {
@@ -64,8 +64,8 @@ namespace Nox.Tests.NoxGenericRepositoryTests
                         TestPropertyInt      = testPropertyInt,
                         TestPropertyString   = testPropertyString
                     },
-                    "DELETE FROM TestEntity1 WHERE TestEntity1Id = @TestEntity1Id");
-
+                    "UPDATE TestEntity1 SET TestPropertyString = @TestPropertyString, TestPropertyInt = @TestPropertyInt, TestPropertyDateTime = @TestPropertyDateTime WHERE TestEntity1Id = @TestEntity1Id");
+                
                 yield return new TestCaseData(
                     new TestEntity2
                     {
@@ -73,16 +73,16 @@ namespace Nox.Tests.NoxGenericRepositoryTests
                         TestPropertyInt    = testPropertyInt,
                         TestPropertyString = testPropertyString
                     },
-                    "DELETE FROM TestEntity2 WHERE TestEntity2Guid = @TestEntity2Guid");
+                    "UPDATE TestEntity2 SET TestPropertyString = @TestPropertyString, TestPropertyInt = @TestPropertyInt, TestPropertyDateTime = @TestPropertyDateTime WHERE TestEntity2Guid = @TestEntity2Guid");
 
                 yield return new TestCaseData(
                     new TestEntity3
                     {
-                        Id                  = testEntityId,
-                        TestPropertyInt     = testPropertyInt,
-                        TestPropertyString  = testPropertyString
+                        Id                 = testEntityId,
+                        TestPropertyInt    = testPropertyInt,
+                        TestPropertyString = testPropertyString
                     },
-                    "DELETE FROM TestEntity3 WHERE Id = @Id");
+                    "UPDATE TestEntity3 SET TestPropertyString = @TestPropertyString, TestPropertyInt = @TestPropertyInt, TestPropertyDateTime = @TestPropertyDateTime WHERE Id = @Id");
             }
         }
     }

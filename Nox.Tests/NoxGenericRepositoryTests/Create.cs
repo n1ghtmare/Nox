@@ -31,6 +31,8 @@ namespace Nox.Tests.NoxGenericRepositoryTests
                            Times.Once());
         }
 
+        // TODO -> Using Create should autopopulate the primarykey property (if exists) with the SCOPE_IDENTITY()
+
         private static IEnumerable<TestCaseData> InsertTestCases
         {
             get
