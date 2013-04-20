@@ -1,9 +1,8 @@
 using Moq;
-using Nox.Tests.Helpers.Entities;
 
 namespace Nox.Tests.Helpers
 {
-    public class TestableNoxGenericRepository : NoxGenericRepository<TestEntity1>
+    public class TestableNoxGenericRepository<T> : NoxGenericRepository<T> where T : class, new()
     {
         public Mock<INox> MockNox { get; set; }
 
@@ -12,9 +11,9 @@ namespace Nox.Tests.Helpers
             MockNox = mockNox;
         }
 
-        public static TestableNoxGenericRepository Create()
+        public static TestableNoxGenericRepository<T> Create()
         {
-            return new TestableNoxGenericRepository(new Mock<INox>());
+            return new TestableNoxGenericRepository<T>(new Mock<INox>());
         }
     }
 }

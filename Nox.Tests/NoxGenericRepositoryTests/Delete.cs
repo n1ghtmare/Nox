@@ -5,6 +5,7 @@ using System.Reflection;
 using Moq;
 using NUnit.Framework;
 
+using Nox.Tests.Helpers;
 using Nox.Tests.Helpers.Entities;
 
 namespace Nox.Tests.NoxGenericRepositoryTests
@@ -35,8 +36,7 @@ namespace Nox.Tests.NoxGenericRepositoryTests
         public void EntityWithNoPrimaryKey_ThrowsAnException()
         {
             // Arrange
-            var mockNox = new Mock<INox>();
-            var noxGenericRepository = new NoxGenericRepository<TestEntity4>(mockNox.Object);
+            var noxGenericRepository = TestableNoxGenericRepository<TestEntity4>.Create();
             var fakeEntity = new TestEntity4();
             
             // Act

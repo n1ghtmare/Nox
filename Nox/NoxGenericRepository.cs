@@ -47,19 +47,21 @@ namespace Nox
             return string.Format("SELECT {0} FROM {1}", FlattenQuerySegments(queryColumns), entityType.Name);
         }
 
-        public IEnumerable<T> Get(string where)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<T> Get(string where, object parameters)
         {
-            throw new NotImplementedException();
+            if(parameters == null)
+                throw new ArgumentNullException("parameters", "Can't pass null parameters, make sure you pass valid query parameters");
+
+            if (string.IsNullOrEmpty(_queryCache.Select))
+                _queryCache.Select = ComposeSelectQuery();
+            
+            return _nox.Execute<T>(string.Format("{0} WHERE {1}", _queryCache.Select, where), parameters);
         }
 
         public void Create(T entity)
         {
             string insertQuery = ComposeAndCacheInsertQuery(entity);
+
             _nox.Execute(insertQuery, entity);
         }
 
@@ -69,11 +71,13 @@ namespace Nox
             {
                 if (string.IsNullOrEmpty(_queryCache.InsertWithPk))
                     _queryCache.InsertWithPk = ComposeInsertQueryWithPrimaryKey();
+
                 return _queryCache.InsertWithPk;
             }
 
             if (string.IsNullOrEmpty(_queryCache.Insert))
                 _queryCache.Insert = ComposeInsertQuery();
+
             return _queryCache.Insert;
         }
 

@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using Moq;
 using NUnit.Framework;
@@ -18,39 +16,39 @@ namespace Nox.Tests.NoxGenericRepositoryTests
         public void Entity_CallsNoxExecuteWithCorrectlyComposedSelectQuery()
         {
             // Arrange
-            var mockNox = new Mock<INox>();
-            var noxGenericRepository = new NoxGenericRepository<TestEntity1>(mockNox.Object);
+            var noxGenericRepository = TestableNoxGenericRepository<TestEntity1>.Create();
             var expectedSqlQuery = "SELECT TestEntity1Id, TestPropertyString, TestPropertyInt, TestPropertyDateTime FROM TestEntity1";
 
             // Act
             noxGenericRepository.GetAll();
 
             // Assert
-            mockNox.Verify(x => x.Execute<TestEntity1>(expectedSqlQuery),
-                           Times.Once());
+            noxGenericRepository.MockNox
+                                .Verify(x => x.Execute<TestEntity1>(expectedSqlQuery),
+                                        Times.Once());
         }
 
         [Test]
         public void EntityWithDifferentNameAndProperties_CallsNoxExecuteWithCorrectlyComposedSelectQuery()
         {
             // Arrange
-            var mockNox = new Mock<INox>();
-            var noxGenericRepository = new NoxGenericRepository<TestEntity2>(mockNox.Object);
+            var noxGenericRepository = TestableNoxGenericRepository<TestEntity2>.Create();
             var expectedSqlQuery = "SELECT TestEntity2Guid, TestPropertyString, TestPropertyInt, TestPropertyDateTime FROM TestEntity2";
 
             // Act
             noxGenericRepository.GetAll();
 
             // Assert
-            mockNox.Verify(x => x.Execute<TestEntity2>(expectedSqlQuery),
-                           Times.Once());
+            noxGenericRepository.MockNox
+                                .Verify(x => x.Execute<TestEntity2>(expectedSqlQuery),
+                                        Times.Once());
         }
 
         [Test]
-        public void Entity_ReturnsCorrectResultsOfIEnumerableTEntity()
+        public void Entity_ReturnsCorrectNumberOfResults()
         {
             // Arrange
-            var noxGenericRepository = TestableNoxGenericRepository.Create();
+            var noxGenericRepository = TestableNoxGenericRepository<TestEntity1>.Create();
 
             noxGenericRepository.MockNox
                                 .Setup(x => x.Execute<TestEntity1>(It.IsAny<string>()))

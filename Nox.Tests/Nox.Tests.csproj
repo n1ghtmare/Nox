@@ -52,6 +52,7 @@
     <Compile Include="NoxCoreTests\ExecuteScalar.cs" />
     <Compile Include="Helpers\Entities\TestEntity1.cs" />
     <Compile Include="NoxGenericRepositoryTests\Delete.cs" />
+    <Compile Include="NoxGenericRepositoryTests\Get.cs" />
     <Compile Include="NoxGenericRepositoryTests\GetAll.cs" />
     <Compile Include="NoxGenericRepositoryTests\Update.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
