@@ -1,84 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" total="34" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-19" time="21:11:40">
+<test-results name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" total="35" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2013-04-20" time="17:51:14">
   <environment nunit-version="2.6.2.12296" clr-version="2.0.50727.5444" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="C:\Program Files (x86)\NUnit 2.6.2\bin" machine-name="STTIKR64" user="nightmare" user-domain="STTIKR64" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" executed="True" result="Success" success="True" time="1.777" asserts="0">
+  <test-suite type="Assembly" name="C:\Nox\Nox.Tests\bin\Debug\Nox.Tests.dll" executed="True" result="Success" success="True" time="1.765" asserts="0">
     <results>
-      <test-suite type="Namespace" name="Nox" executed="True" result="Success" success="True" time="1.759" asserts="0">
+      <test-suite type="Namespace" name="Nox" executed="True" result="Success" success="True" time="1.746" asserts="0">
         <results>
-          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="1.758" asserts="0">
+          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="1.746" asserts="0">
             <results>
-              <test-suite type="Namespace" name="NoxCoreTests" executed="True" result="Success" success="True" time="1.618" asserts="0">
+              <test-suite type="Namespace" name="NoxCoreTests" executed="True" result="Success" success="True" time="1.603" asserts="0">
                 <results>
-                  <test-suite type="TestFixture" name="Execute" executed="True" result="Success" success="True" time="1.558" asserts="0">
+                  <test-suite type="TestFixture" name="Execute" executed="True" result="Success" success="True" time="1.546" asserts="0">
                     <results>
-                      <test-case name="Nox.Tests.NoxCoreTests.Execute.Query_CallsNoxProviderCommandExecuteReader" executed="True" result="Success" success="True" time="0.584" asserts="0" />
-                      <test-case name="Nox.Tests.NoxCoreTests.Execute.Query_CallsNoxProviderConnectionOpen" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                      <test-case name="Nox.Tests.NoxCoreTests.Execute.Query_CallsNoxProviderCreateCommand" executed="True" result="Success" success="True" time="0.023" asserts="0" />
+                      <test-case name="Nox.Tests.NoxCoreTests.Execute.Query_CallsNoxProviderCommandExecuteReader" executed="True" result="Success" success="True" time="0.562" asserts="0" />
+                      <test-case name="Nox.Tests.NoxCoreTests.Execute.Query_CallsNoxProviderConnectionOpen" executed="True" result="Success" success="True" time="0.006" asserts="0" />
+                      <test-case name="Nox.Tests.NoxCoreTests.Execute.Query_CallsNoxProviderCreateCommand" executed="True" result="Success" success="True" time="0.024" asserts="0" />
                       <test-case name="Nox.Tests.NoxCoreTests.Execute.Query_CallsNoxProviderCreateConnection" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                      <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryAndAnInvalidType_ThrowsAnException" executed="True" result="Success" success="True" time="0.067" asserts="2" />
-                      <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryAndType_ReturnsCorrectlyMappedType" executed="True" result="Success" success="True" time="0.673" asserts="3" />
+                      <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryAndAnInvalidType_ThrowsAnException" executed="True" result="Success" success="True" time="0.069" asserts="2" />
+                      <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryAndType_ReturnsCorrectlyMappedType" executed="True" result="Success" success="True" time="0.678" asserts="3" />
                       <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryReturningMoreColumnsThanThePropertiesInTheType_ReturnsCorrectlyMappedType" executed="True" result="Success" success="True" time="0.011" asserts="3" />
-                      <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryThatFindsResults_ReturnsAListOfDynamicResultsWithCorrectCount" executed="True" result="Success" success="True" time="0.110" asserts="3" />
-                      <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryWithParameters_CallsNoxProviderCommandAddParameterForEachProvidedParameter" executed="True" result="Success" success="True" time="0.034" asserts="0" />
+                      <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryThatFindsResults_ReturnsAListOfDynamicResultsWithCorrectCount" executed="True" result="Success" success="True" time="0.113" asserts="3" />
+                      <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryWithParameters_CallsNoxProviderCommandAddParameterForEachProvidedParameter" executed="True" result="Success" success="True" time="0.036" asserts="0" />
                       <test-case name="Nox.Tests.NoxCoreTests.Execute.QueryWithParameters_CallsNoxProviderCreateParameters" executed="True" result="Success" success="True" time="0.005" asserts="0" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="ExecuteScalar" executed="True" result="Success" success="True" time="0.054" asserts="0">
+                  <test-suite type="TestFixture" name="ExecuteScalar" executed="True" result="Success" success="True" time="0.051" asserts="0">
                     <results>
-                      <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalar_CallsNoxProviderCommandExecuteScalar" executed="True" result="Success" success="True" time="0.007" asserts="0" />
+                      <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalar_CallsNoxProviderCommandExecuteScalar" executed="True" result="Success" success="True" time="0.006" asserts="0" />
                       <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalar_CallsNoxProviderCreateCommand" executed="True" result="Success" success="True" time="0.005" asserts="0" />
                       <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalar_CallsNoxProviderCreateConnection" executed="True" result="Success" success="True" time="0.003" asserts="0" />
-                      <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalarWithParameters_CallsNoxProviderCommandAddParameterForEachProvidedParameter" executed="True" result="Success" success="True" time="0.007" asserts="0" />
-                      <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalarWithParameters_CallsNoxProviderConnectionOpen" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                      <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalarWithParameters_CallsNoxProviderCommandAddParameterForEachProvidedParameter" executed="True" result="Success" success="True" time="0.008" asserts="0" />
+                      <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalarWithParameters_CallsNoxProviderConnectionOpen" executed="True" result="Success" success="True" time="0.003" asserts="0" />
                       <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalarWithParameters_CallsNoxProviderCreateParameters" executed="True" result="Success" success="True" time="0.004" asserts="0" />
                       <test-case name="Nox.Tests.NoxCoreTests.ExecuteScalar.QueryScalarWithResultOfTypeInt_ReturnsInt" executed="True" result="Success" success="True" time="0.005" asserts="1" />
                     </results>
                   </test-suite>
                 </results>
               </test-suite>
-              <test-suite type="Namespace" name="NoxGenericRepositoryTests" executed="True" result="Success" success="True" time="0.134" asserts="0">
+              <test-suite type="Namespace" name="NoxGenericRepositoryTests" executed="True" result="Success" success="True" time="0.137" asserts="0">
                 <results>
-                  <test-suite type="TestFixture" name="Create" executed="True" result="Success" success="True" time="0.055" asserts="0">
+                  <test-suite type="TestFixture" name="Create" executed="True" result="Success" success="True" time="0.067" asserts="0">
                     <results>
-                      <test-suite type="ParameterizedTest" name="Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery" executed="True" result="Success" success="True" time="0.053" asserts="0">
+                      <test-suite type="ParameterizedTest" name="Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery" executed="True" result="Success" success="True" time="0.057" asserts="0">
                         <results>
-                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(Nox.Tests.Helpers.Entities.TestEntity1,&quot;INSERT INTO TestEntity1 (TestEntity1Id, TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestEntity1Id, @TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)&quot;)" executed="True" result="Success" success="True" time="0.024" asserts="0" />
-                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(Nox.Tests.Helpers.Entities.TestEntity1,&quot;INSERT INTO TestEntity1 (TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)&quot;)" executed="True" result="Success" success="True" time="0.002" asserts="0" />
+                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(Nox.Tests.Helpers.Entities.TestEntity1,&quot;INSERT INTO TestEntity1 (TestEntity1Id, TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestEntity1Id, @TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)&quot;)" executed="True" result="Success" success="True" time="0.025" asserts="0" />
+                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(Nox.Tests.Helpers.Entities.TestEntity1,&quot;INSERT INTO TestEntity1 (TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)&quot;)" executed="True" result="Success" success="True" time="0.003" asserts="0" />
                           <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(Nox.Tests.Helpers.Entities.TestEntity2,&quot;INSERT INTO TestEntity2 (TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)&quot;)" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(Nox.Tests.Helpers.Entities.TestEntity2,&quot;INSERT INTO TestEntity2 (TestEntity2Guid, TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestEntity2Guid, @TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)&quot;)" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(Nox.Tests.Helpers.Entities.TestEntity2,&quot;INSERT INTO TestEntity2 (TestEntity2Guid, TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestEntity2Guid, @TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)&quot;)" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                           <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(Nox.Tests.Helpers.Entities.TestEntity3,&quot;INSERT INTO TestEntity3 (TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)&quot;)" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                           <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Entity_CallsNoxExecuteWithCorrectlyComposedInsertQuery(Nox.Tests.Helpers.Entities.TestEntity3,&quot;INSERT INTO TestEntity3 (Id, TestPropertyString, TestPropertyInt, TestPropertyDateTime) VALUES (@Id, @TestPropertyString, @TestPropertyInt, @TestPropertyDateTime)&quot;)" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                         </results>
                       </test-suite>
+                      <test-case name="Nox.Tests.NoxGenericRepositoryTests.Create.Scenario_ExpectedBehavior" executed="True" result="Success" success="True" time="0.001" asserts="0" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="Delete" executed="True" result="Success" success="True" time="0.024" asserts="0">
+                  <test-suite type="TestFixture" name="Delete" executed="True" result="Success" success="True" time="0.022" asserts="0">
                     <results>
-                      <test-suite type="ParameterizedTest" name="Entity_CallsNoxExecuteWithCorrectlyGeneratedDeleteQuery" executed="True" result="Success" success="True" time="0.017" asserts="0">
+                      <test-suite type="ParameterizedTest" name="Entity_CallsNoxExecuteWithCorrectlyGeneratedDeleteQuery" executed="True" result="Success" success="True" time="0.016" asserts="0">
                         <results>
-                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Delete.Entity_CallsNoxExecuteWithCorrectlyGeneratedDeleteQuery(Nox.Tests.Helpers.Entities.TestEntity1,&quot;DELETE FROM TestEntity1 WHERE TestEntity1Id = @TestEntity1Id&quot;)" executed="True" result="Success" success="True" time="0.004" asserts="0" />
+                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Delete.Entity_CallsNoxExecuteWithCorrectlyGeneratedDeleteQuery(Nox.Tests.Helpers.Entities.TestEntity1,&quot;DELETE FROM TestEntity1 WHERE TestEntity1Id = @TestEntity1Id&quot;)" executed="True" result="Success" success="True" time="0.005" asserts="0" />
                           <test-case name="Nox.Tests.NoxGenericRepositoryTests.Delete.Entity_CallsNoxExecuteWithCorrectlyGeneratedDeleteQuery(Nox.Tests.Helpers.Entities.TestEntity2,&quot;DELETE FROM TestEntity2 WHERE TestEntity2Guid = @TestEntity2Guid&quot;)" executed="True" result="Success" success="True" time="0.002" asserts="0" />
-                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Delete.Entity_CallsNoxExecuteWithCorrectlyGeneratedDeleteQuery(Nox.Tests.Helpers.Entities.TestEntity3,&quot;DELETE FROM TestEntity3 WHERE Id = @Id&quot;)" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Delete.Entity_CallsNoxExecuteWithCorrectlyGeneratedDeleteQuery(Nox.Tests.Helpers.Entities.TestEntity3,&quot;DELETE FROM TestEntity3 WHERE Id = @Id&quot;)" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                         </results>
                       </test-suite>
                       <test-case name="Nox.Tests.NoxGenericRepositoryTests.Delete.EntityWithNoPrimaryKey_ThrowsAnException" executed="True" result="Success" success="True" time="0.001" asserts="2" />
                     </results>
                   </test-suite>
-                  <test-suite type="TestFixture" name="GetAll" executed="True" result="Success" success="True" time="0.018" asserts="0">
+                  <test-suite type="TestFixture" name="GetAll" executed="True" result="Success" success="True" time="0.017" asserts="0">
                     <results>
                       <test-case name="Nox.Tests.NoxGenericRepositoryTests.GetAll.Entity_CallsNoxExecuteWithCorrectlyComposedSelectQuery" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                      <test-case name="Nox.Tests.NoxGenericRepositoryTests.GetAll.Entity_ReturnsCorrectResultsOfIEnumerableTEntity" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                      <test-case name="Nox.Tests.NoxGenericRepositoryTests.GetAll.Entity_ReturnsCorrectResultsOfIEnumerableTEntity" executed="True" result="Success" success="True" time="0.002" asserts="1" />
                       <test-case name="Nox.Tests.NoxGenericRepositoryTests.GetAll.EntityWithDifferentNameAndProperties_CallsNoxExecuteWithCorrectlyComposedSelectQuery" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                     </results>
                   </test-suite>
                   <test-suite type="TestFixture" name="Update" executed="True" result="Success" success="True" time="0.021" asserts="0">
                     <results>
-                      <test-suite type="ParameterizedTest" name="Entity_CallsNoxExecuteWithCorrectlyGeneratedUpdateQuery" executed="True" result="Success" success="True" time="0.016" asserts="0">
+                      <test-suite type="ParameterizedTest" name="Entity_CallsNoxExecuteWithCorrectlyGeneratedUpdateQuery" executed="True" result="Success" success="True" time="0.017" asserts="0">
                         <results>
                           <test-case name="Nox.Tests.NoxGenericRepositoryTests.Update.Entity_CallsNoxExecuteWithCorrectlyGeneratedUpdateQuery(Nox.Tests.Helpers.Entities.TestEntity1,&quot;UPDATE TestEntity1 SET TestPropertyString = @TestPropertyString, TestPropertyInt = @TestPropertyInt, TestPropertyDateTime = @TestPropertyDateTime WHERE TestEntity1Id = @TestEntity1Id&quot;)" executed="True" result="Success" success="True" time="0.005" asserts="0" />
-                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Update.Entity_CallsNoxExecuteWithCorrectlyGeneratedUpdateQuery(Nox.Tests.Helpers.Entities.TestEntity2,&quot;UPDATE TestEntity2 SET TestPropertyString = @TestPropertyString, TestPropertyInt = @TestPropertyInt, TestPropertyDateTime = @TestPropertyDateTime WHERE TestEntity2Guid = @TestEntity2Guid&quot;)" executed="True" result="Success" success="True" time="0.003" asserts="0" />
+                          <test-case name="Nox.Tests.NoxGenericRepositoryTests.Update.Entity_CallsNoxExecuteWithCorrectlyGeneratedUpdateQuery(Nox.Tests.Helpers.Entities.TestEntity2,&quot;UPDATE TestEntity2 SET TestPropertyString = @TestPropertyString, TestPropertyInt = @TestPropertyInt, TestPropertyDateTime = @TestPropertyDateTime WHERE TestEntity2Guid = @TestEntity2Guid&quot;)" executed="True" result="Success" success="True" time="0.002" asserts="0" />
                           <test-case name="Nox.Tests.NoxGenericRepositoryTests.Update.Entity_CallsNoxExecuteWithCorrectlyGeneratedUpdateQuery(Nox.Tests.Helpers.Entities.TestEntity3,&quot;UPDATE TestEntity3 SET TestPropertyString = @TestPropertyString, TestPropertyInt = @TestPropertyInt, TestPropertyDateTime = @TestPropertyDateTime WHERE Id = @Id&quot;)" executed="True" result="Success" success="True" time="0.003" asserts="0" />
                         </results>
                       </test-suite>

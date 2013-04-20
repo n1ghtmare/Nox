@@ -10,11 +10,13 @@ namespace Nox
     {
         private readonly INox _nox;
         private readonly PropertyInfo _primaryKeyProperty;
+        private readonly QueryCache _queryCache;
 
         public NoxGenericRepository(INox nox)
         {
             _nox = nox;
             _primaryKeyProperty = GetPrimaryKeyProperty();
+            _queryCache = new QueryCache();
         }
 
         private static PropertyInfo GetPrimaryKeyProperty()
@@ -28,15 +30,16 @@ namespace Nox
 
         public IEnumerable<T> GetAll()
         {
-            string selectQuery = ComposeSelectQuery();
+            if (string.IsNullOrEmpty(_queryCache.Select))
+                _queryCache.Select = ComposeSelectQuery();
 
-            return _nox.Execute<T>(selectQuery);
+            return _nox.Execute<T>(_queryCache.Select);
         }
 
         private string ComposeSelectQuery()
         {
             var queryColumns = new StringBuilder();
-            Type entityType = typeof (T);
+            var entityType = typeof (T);
 
             foreach (var property in entityType.GetProperties())
                 queryColumns.AppendFormat("{0}, ", property.Name);
@@ -56,39 +59,60 @@ namespace Nox
 
         public void Create(T entity)
         {
-            string insertQuery = ComposeInsertQuery(entity);
-
+            string insertQuery = ComposeAndCacheInsertQuery(entity);
             _nox.Execute(insertQuery, entity);
         }
 
-        private string ComposeInsertQuery(T entity)
+        private string ComposeAndCacheInsertQuery(T entity)
         {
-            var queryColumns = new StringBuilder();
-            var queryValues = new StringBuilder();
-            Type entityType = entity.GetType();
-
-            foreach (var property in entityType.GetProperties().Where(property => IsUsedInInsertQuery(entity, property)))
+            if (PrimaryKeyHasValue(entity))
             {
-                queryColumns.AppendFormat("{0}, ", property.Name);
-                queryValues.AppendFormat("@{0}, ", property.Name);
+                if (string.IsNullOrEmpty(_queryCache.InsertWithPk))
+                    _queryCache.InsertWithPk = ComposeInsertQueryWithPrimaryKey();
+                return _queryCache.InsertWithPk;
+            }
+
+            if (string.IsNullOrEmpty(_queryCache.Insert))
+                _queryCache.Insert = ComposeInsertQuery();
+            return _queryCache.Insert;
+        }
+
+        private bool PrimaryKeyHasValue(T entity)
+        {
+            object propertyValue = _primaryKeyProperty.GetValue(entity, null);
+
+            return propertyValue != null && propertyValue.ToString() != "0" &&
+                   (!(propertyValue is Guid) || (Guid) propertyValue != Guid.Empty);
+        }
+
+        private string ComposeInsertQuery()
+        {
+            IEnumerable<PropertyInfo> defaultProperties =
+                typeof (T).GetProperties().Where(property => property != _primaryKeyProperty);
+            return ComposeInsertQuery(defaultProperties);
+        }
+
+        private string ComposeInsertQueryWithPrimaryKey()
+        {
+            IEnumerable<PropertyInfo> defaultProperties = typeof (T).GetProperties();
+            return ComposeInsertQuery(defaultProperties);
+        }
+
+        private string ComposeInsertQuery(IEnumerable<PropertyInfo> properties)
+        {
+            var colSegments = new StringBuilder();
+            var valSegments = new StringBuilder();
+
+            foreach (var property in properties)
+            {
+                colSegments.AppendFormat("{0}, ", property.Name);
+                valSegments.AppendFormat("@{0}, ", property.Name);
             }
             return string.Format("INSERT INTO {0} ({1}) VALUES ({2})",
-                                 entityType.Name, FlattenQuerySegments(queryColumns), FlattenQuerySegments(queryValues));
+                                 typeof (T).Name, FlattenQuerySegments(colSegments), FlattenQuerySegments(valSegments));
         }
 
-        private bool IsUsedInInsertQuery(T entity, PropertyInfo property)
-        {
-            if (property == _primaryKeyProperty)
-            {
-                var propertyValue = property.GetValue(entity, null);
-                if ((propertyValue == null || propertyValue.ToString() == "0") || 
-                    (propertyValue is Guid && (Guid) propertyValue == Guid.Empty))
-                    return false;
-            }
-            return true;
-        }
-
-        private string FlattenQuerySegments(StringBuilder queryParameters)
+        private static string FlattenQuerySegments(StringBuilder queryParameters)
         {
             string flatParams = queryParameters.ToString().Trim();
             return flatParams.Substring(0, flatParams.Length - 1);
@@ -96,31 +120,33 @@ namespace Nox
 
         public void Update(T entity)
         {
-            var updateQuery = ComposeUpdateQuery();
+            if (string.IsNullOrEmpty(_queryCache.Update))
+                _queryCache.Update = ComposeUpdateQuery();
 
-            _nox.Execute(updateQuery, entity);
+            _nox.Execute(_queryCache.Update, entity);
         }
 
         private string ComposeUpdateQuery()
         {
-            if(_primaryKeyProperty == null)
+            if (_primaryKeyProperty == null)
                 throw new Exception("Can't compose an update query - unable to detect primary key");
 
-            var entityType = typeof(T);
+            var entityType = typeof (T);
             var updateSegments = new StringBuilder();
 
             foreach (var property in entityType.GetProperties().Where(property => property != _primaryKeyProperty))
                 updateSegments.AppendFormat("{0} = @{0}, ", property.Name);
 
             return string.Format("UPDATE {0} SET {1} WHERE {2} = @{2}",
-                                            entityType.Name, FlattenQuerySegments(updateSegments), _primaryKeyProperty.Name);
+                                 entityType.Name, FlattenQuerySegments(updateSegments), _primaryKeyProperty.Name);
         }
 
         public void Delete(T entity)
         {
-            var deleteQuery = ComposeDeleteQuery();
+            if (string.IsNullOrEmpty(_queryCache.Delete))
+                _queryCache.Delete = ComposeDeleteQuery();
 
-            _nox.Execute(deleteQuery, entity);
+            _nox.Execute(_queryCache.Delete, entity);
         }
 
         private string ComposeDeleteQuery()
