@@ -9,9 +9,9 @@ namespace Nox
 {
     public class Nox : INox
     {
-        private readonly INoxProvider _provider;
+        private readonly IProvider _provider;
 
-        public Nox(INoxProvider provider)
+        public Nox(IProvider provider)
         {
             _provider = provider;
         }

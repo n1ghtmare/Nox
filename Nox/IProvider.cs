@@ -3,7 +3,7 @@ using System.Data;
 
 namespace Nox
 {
-    public interface INoxProvider
+    public interface IProvider
     {
         IDbConnection CreateConnection();
         IDbCommand CreateCommand(string query, IDbConnection connection, CommandType commandType);

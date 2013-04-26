@@ -12,9 +12,9 @@ namespace Nox.Tests.Helpers
         public const string Query = "select * from TestTable";
         public const string QueryWithParameters = Query + " where TestFirstParameter = @TestFirstParameter and TestSecondParameter = @TestSecondParameter";
 
-        public Mock<INoxProvider> MockNoxProvider { get; set; }
+        public Mock<IProvider> MockNoxProvider { get; set; }
 
-        public TestableNox(Mock<INoxProvider> mockNoxProvider)
+        public TestableNox(Mock<IProvider> mockNoxProvider)
             : base(mockNoxProvider.Object)
         {
             MockNoxProvider = mockNoxProvider;
@@ -22,7 +22,7 @@ namespace Nox.Tests.Helpers
 
         public static TestableNox Create()
         {
-            var mockNoxProvider = new Mock<INoxProvider>();
+            var mockNoxProvider = new Mock<IProvider>();
             var mockCommand = new Mock<IDbCommand>();
 
             mockCommand

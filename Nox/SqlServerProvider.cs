@@ -5,16 +5,16 @@ using System.Data.SqlClient;
 
 namespace Nox
 {
-    public sealed class SqlServerNoxProvider : INoxProvider
+    public sealed class SqlServerProvider : IProvider
     {
         private readonly string _connectionString;
 
-        public SqlServerNoxProvider()
+        public SqlServerProvider()
         {
             _connectionString = ConfigurationManager.ConnectionStrings[0].ConnectionString;
         }
 
-        public SqlServerNoxProvider(string connectionString)
+        public SqlServerProvider(string connectionString)
         {
             _connectionString = connectionString;
         }
@@ -26,12 +26,7 @@ namespace Nox
 
         public IDbCommand CreateCommand(string query, IDbConnection connection, CommandType commandType)
         {
-            var command = new SqlCommand(query, connection as SqlConnection)
-            {
-                CommandType = commandType
-            };
-
-            return command;
+            return new SqlCommand(query, connection as SqlConnection) { CommandType = commandType };
         }
 
         public IEnumerable<IDataParameter> CreateParameters(object parameters)
@@ -45,7 +40,6 @@ namespace Nox
                         ParameterName = string.Format("@{0}", propertyInfo.Name),
                         Value = propertyInfo.GetValue(parameters, null)
                     };
-
                     yield return sqlParameter;
                 }
             }

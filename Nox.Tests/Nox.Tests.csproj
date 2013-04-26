@@ -44,17 +44,21 @@
   <ItemGroup>
     <Compile Include="Helpers\Entities\TestEntity4.cs" />
     <Compile Include="Helpers\Entities\TestEntityBase.cs" />
-    <Compile Include="Helpers\TestableNoxGenericRepository.cs" />
+    <Compile Include="Helpers\TestableRepository.cs" />
     <Compile Include="Helpers\Entities\TestEntity2.cs" />
     <Compile Include="Helpers\Entities\TestEntity3.cs" />
-    <Compile Include="NoxGenericRepositoryTests\Create.cs" />
+    <Compile Include="QueryComposerTests\SqlServerQueryComposerTests\ComposeDelete.cs" />
+    <Compile Include="QueryComposerTests\SqlServerQueryComposerTests\ComposeInsert.cs" />
+    <Compile Include="QueryComposerTests\SqlServerQueryComposerTests\ComposeSelect.cs" />
+    <Compile Include="QueryComposerTests\SqlServerQueryComposerTests\ComposeUpdate.cs" />
+    <Compile Include="RepositoryTests\Create.cs" />
     <Compile Include="NoxCoreTests\Execute.cs" />
     <Compile Include="NoxCoreTests\ExecuteScalar.cs" />
     <Compile Include="Helpers\Entities\TestEntity1.cs" />
-    <Compile Include="NoxGenericRepositoryTests\Delete.cs" />
-    <Compile Include="NoxGenericRepositoryTests\Get.cs" />
-    <Compile Include="NoxGenericRepositoryTests\GetAll.cs" />
-    <Compile Include="NoxGenericRepositoryTests\Update.cs" />
+    <Compile Include="RepositoryTests\Delete.cs" />
+    <Compile Include="RepositoryTests\Get.cs" />
+    <Compile Include="RepositoryTests\GetAll.cs" />
+    <Compile Include="RepositoryTests\Update.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\TestableNox.cs" />
   </ItemGroup>

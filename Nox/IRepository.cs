@@ -2,7 +2,7 @@
 
 namespace Nox
 {
-    public interface INoxGenericRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
         IEnumerable<T> Get(string where, object parameters);

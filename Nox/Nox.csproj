@@ -38,13 +38,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="INox.cs" />
-    <Compile Include="INoxGenericRepository.cs" />
-    <Compile Include="INoxProvider.cs" />
+    <Compile Include="IQueryComposer.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="IProvider.cs" />
     <Compile Include="Nox.cs" />
-    <Compile Include="NoxGenericRepository.cs" />
+    <Compile Include="Repository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryCache.cs" />
-    <Compile Include="SqlServerNoxProvider.cs" />
+    <Compile Include="SqlServerProvider.cs" />
+    <Compile Include="SqlServerQueryComposer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
