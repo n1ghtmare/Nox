@@ -1,4 +1,6 @@
 using Moq;
+using Nox.Interfaces;
+using Nox.Repositories;
 
 namespace Nox.Tests.Helpers
 {

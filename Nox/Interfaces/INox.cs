@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace Nox
+namespace Nox.Interfaces
 {
     public interface INox
     {

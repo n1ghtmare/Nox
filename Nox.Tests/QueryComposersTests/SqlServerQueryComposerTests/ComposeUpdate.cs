@@ -2,9 +2,10 @@
 
 using NUnit.Framework;
 
+using Nox.QueryComposers;
 using Nox.Tests.Helpers.Entities;
 
-namespace Nox.Tests.QueryComposerTests.SqlServerQueryComposerTests
+namespace Nox.Tests.QueryComposersTests.SqlServerQueryComposerTests
 {
     [TestFixture]
     public class ComposeUpdate

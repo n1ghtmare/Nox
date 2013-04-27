@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nox
+namespace Nox.Interfaces
 {
     public interface IRepository<T> where T : class
     {

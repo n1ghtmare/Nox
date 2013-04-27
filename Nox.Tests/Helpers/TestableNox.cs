@@ -2,6 +2,7 @@
 using System.Data;
 
 using Moq;
+using Nox.Interfaces;
 
 namespace Nox.Tests.Helpers
 {

@@ -52,11 +52,11 @@ namespace Nox.Tests.RepositoryTests
         public void EntityWithNoPrimaryKey_ThrowsAnException()
         {
             // Arrange
-            var noxGenericRepository = TestableRepository<TestEntity4>.Create();
+            var repository = TestableRepository<TestEntity4>.Create();
             var fakeEntity = new TestEntity4();
 
             // Act
-            var exception = Assert.Throws<Exception>(() => noxGenericRepository.Update(fakeEntity));
+            var exception = Assert.Throws<Exception>(() => repository.Update(fakeEntity));
 
             // Assert
             Assert.AreEqual(exception.Message, "Can't compose an update query - unable to detect primary key");

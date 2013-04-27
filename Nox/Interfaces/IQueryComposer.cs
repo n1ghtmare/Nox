@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nox
+namespace Nox.Interfaces
 {
     public interface IQueryComposer
     {

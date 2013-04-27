@@ -5,6 +5,8 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 
+using Nox.Interfaces;
+
 namespace Nox
 {
     public class Nox : INox

@@ -1,4 +1,4 @@
-﻿namespace Nox
+﻿namespace Nox.Helpers
 {
     public class QueryCache
     {

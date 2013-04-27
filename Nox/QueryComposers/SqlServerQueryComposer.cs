@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Nox.Interfaces;
 
-namespace Nox
+namespace Nox.QueryComposers
 {
     public class SqlServerQueryComposer : IQueryComposer
     {
