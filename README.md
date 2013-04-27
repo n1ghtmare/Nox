@@ -115,5 +115,6 @@ As you can see so far, you can extend Nox and the Repository in numerous ways, a
 	repository.Update(employee);	
 ```
 
+Adding more documentation is a high priority, bare with me.
 More stuff is to come, contributions, suggestions and issue reports are highly appreciated.
 Seriously, write code with me :)
