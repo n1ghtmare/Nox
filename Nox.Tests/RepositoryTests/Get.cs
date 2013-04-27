@@ -73,12 +73,12 @@ namespace Nox.Tests.RepositoryTests
         public void NullParameters_ThrowsAnException()
         {
             // Arrange
-            var noxGenericRepository = TestableRepository<TestEntity1>.Create();
+            var repository = TestableRepository<TestEntity1>.Create();
 
             // Act
             var exception =
                 Assert.Throws<ArgumentNullException>(
-                    () => noxGenericRepository.Get("TestPropertyInt = @TestPropertyInt", null));
+                    () => repository.Get("TestPropertyInt = @TestPropertyInt", null));
 
             // Assert
             Assert.AreEqual("Can't pass null parameters, make sure you pass valid query parameters\r\nParameter name: parameters", exception.Message);

@@ -53,7 +53,6 @@ namespace Nox.Tests.NoxTests
             var nox = TestableNox.Create();
             var parameters = new { FirstName = "John", LastName = "Doe" };
 
-
             // Act
             nox.ExecuteScalar<int>(TestableNox.QueryScalarWithParameters, parameters);
 

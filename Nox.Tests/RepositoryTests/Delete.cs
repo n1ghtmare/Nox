@@ -15,11 +15,11 @@ namespace Nox.Tests.RepositoryTests
         public void EntityWithNoPrimaryKey_ThrowsAnException()
         {
             // Arrange
-            var noxGenericRepository = TestableRepository<TestEntity4>.Create();
+            var repository = TestableRepository<TestEntity4>.Create();
             var fakeEntity = new TestEntity4();
             
             // Act
-            var exception = Assert.Throws<Exception>(() => noxGenericRepository.Delete(fakeEntity));
+            var exception = Assert.Throws<Exception>(() => repository.Delete(fakeEntity));
 
             // Assert
             Assert.AreEqual(exception.Message, "Can't compose a delete query - unable to detect primary key");
