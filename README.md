@@ -98,14 +98,18 @@ As you can see so far, you can extend Nox and the Repository in numerous ways, a
 ```cs
 	// getting all employees
 	IEnumerable<Employee> allEmployees = repository.GetAll();
+
 	// getting specific employees
 	IEnumerable<Employee> specificEmployees = repository.Get("Name = @Name", new {Name = "Neo"});
+
 	// creating an employee
 	var employee = new Employee {Name = "John Doe", Email = "email", DateOfBirth = DateTime.Today};
 	repository.Create(employee); // employee now has an Id if the table has identity scope
+
 	// deleting an employee
 	var employee = new Employee { Id = 123};
 	repository.Delete(employee);
+
 	// updating an employee
 	var employee = new Employee { Id = 123, Name="Neo", DateOfBirth = DateTime.Today, Email = "neo@internet.com"};
 	repository.Update(employee);	
