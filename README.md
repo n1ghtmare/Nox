@@ -2,9 +2,8 @@ Nox
 ===
 
 A light, simple, flexible and generally awesome micro ORM.
-The core of Nox is a single file which can do a lot by itself and it is is build with extinsibility in mind.
-Additionally Nox comes with a build in generic repository so you can quickly plug any type and have the repository
-ready for usage.
+The core of Nox (The Conductor) is a single class which can do a lot by itself and it is is build with extinsibility in mind.
+Additionally Nox comes with a build in generic repository to help you get quickly into the action.
 
 Simple usage
 ------------
@@ -14,16 +13,16 @@ You start with a DB provider, it will pick the first connection string in your c
 	var provider = new SqlServerProvider();
 ```
 
-Or optionally you can specify one
+Or you can specify a connection string manually
 
 ```cs
 	var provider = new SqlServerProvider("ConnectionString goes here ...");
 ```
 
-This is Nox's core it takes the provider to work with
+This is Nox's core (The Conductor) it takes as a parameter the provider to work with
 
 ```cs
-	var nox = new Nox(provider);
+	var conductor = new Conductor(provider);
 ```
 
 Alright now we're ready to roll - here is some example usages:
@@ -43,26 +42,26 @@ Lets say we have an Employee entity like this
 We could execute this query and it will map for us the results as expected
 
 ```cs
-	IEnumerable<Employee> results = nox.Execute<Employee>("SELECT Id, Name, Email, DateOfBirth FROM Employee");
+	IEnumerable<Employee> results = conductor.Execute<Employee>("SELECT Id, Name, Email, DateOfBirth FROM Employee");
 ```
 
 Ok, not so bad, but what about parameters ? Check this out:
 
 ```cs
-	IEnumerable<Employee> results = nox.Execute<Employee>("SELECT * FROM Employee WHERE Id = @Id",	new {Id = 123});
+	IEnumerable<Employee> results = conductor.Execute<Employee>("SELECT * FROM Employee WHERE Id = @Id",	new {Id = 123});
 ```
 
 Here is how you execute scalars (as an example a slightly longer query):
 
 ```cs
-	decimal result = nox.ExecuteScalar<decimal>("INSERT INTO Employee (Name, Email, DateOfBirth) VALUES (@Name, @Email, @DateOfBirth) SELECT SCOPE_IDENTITY()", 
+	decimal result = conductor.ExecuteScalar<decimal>("INSERT INTO Employee (Name, Email, DateOfBirth) VALUES (@Name, @Email, @DateOfBirth) SELECT SCOPE_IDENTITY()", 
 													  new {Name = "John Doe", Email = "test@test.com", DateOfBirth = new DateTime(1970, 1, 1)});
 ```
 
 You can also work with dynamic return type:
 
 ```cs
-	IEnumerable<dynamic> results = nox.Execute<dynamic>("SELECT Id, Name FROM Tasks", new {Id = 123});            
+	IEnumerable<dynamic> results = conductor.Execute<dynamic>("SELECT Id, Name FROM Tasks", new {Id = 123});            
 	foreach (var task in results)
 	{
 		Console.WriteLine("The Task Id is: {0}", task.Id);
@@ -84,7 +83,7 @@ First we create a provider-specific query composer (since every provider treats 
 Then we give it to our repository (along with the Nox core) so it knows with which database it's working
 
 ```cs
-	var repository = new Repository<Employee>(nox, queryComposer);
+	var repository = new Repository<Employee>(conductor, queryComposer);
 ```
 
 Or you can just use a provider-specific repository without passing any of those:
@@ -117,4 +116,4 @@ As you can see so far, you can extend Nox and the Repository in numerous ways, a
 
 Adding more documentation is a high priority, bare with me.
 More stuff is to come, contributions, suggestions and issue reports are highly appreciated.
-Seriously, write code with me :)
+Join me coding ! :)

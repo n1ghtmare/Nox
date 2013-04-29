@@ -52,15 +52,15 @@
     <Compile Include="QueryComposersTests\SqlServerQueryComposerTests\ComposeSelect.cs" />
     <Compile Include="QueryComposersTests\SqlServerQueryComposerTests\ComposeUpdate.cs" />
     <Compile Include="RepositoryTests\Create.cs" />
-    <Compile Include="NoxTests\Execute.cs" />
-    <Compile Include="NoxTests\ExecuteScalar.cs" />
+    <Compile Include="ConductorTests\Execute.cs" />
+    <Compile Include="ConductorTests\ExecuteScalar.cs" />
     <Compile Include="Helpers\Entities\TestEntity1.cs" />
     <Compile Include="RepositoryTests\Delete.cs" />
     <Compile Include="RepositoryTests\Get.cs" />
     <Compile Include="RepositoryTests\GetAll.cs" />
     <Compile Include="RepositoryTests\Update.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helpers\TestableNox.cs" />
+    <Compile Include="Helpers\TestableConductor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

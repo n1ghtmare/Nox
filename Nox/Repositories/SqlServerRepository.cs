@@ -7,9 +7,9 @@ namespace Nox.Repositories
     public class SqlServerRepository<T> : Repository<T> where T : class, new()
     {
         public SqlServerRepository()
-            : this(new Nox(new SqlServerProvider()), new SqlServerQueryComposer()) { }
+            : this(new Conductor(new SqlServerProvider()), new SqlServerQueryComposer()) { }
 
-        private SqlServerRepository(INox nox, IQueryComposer queryComposer)
-            : base(nox, queryComposer) { }
+        private SqlServerRepository(IConductor conductor, IQueryComposer queryComposer)
+            : base(conductor, queryComposer) { }
     }
 }

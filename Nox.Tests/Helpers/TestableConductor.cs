@@ -6,7 +6,7 @@ using Nox.Interfaces;
 
 namespace Nox.Tests.Helpers
 {
-    public class TestableNox : Nox
+    public class TestableConductor : Conductor
     {
         public const string QueryScalar = "spThatReturnsASingleResult";
         public const string QueryScalarWithParameters = QueryScalar + " @TestFirstParameter = @TestFirstParameter and TestSecondParameter = @TestSecondParameter";
@@ -15,13 +15,13 @@ namespace Nox.Tests.Helpers
 
         public Mock<IProvider> MockNoxProvider { get; set; }
 
-        public TestableNox(Mock<IProvider> mockNoxProvider)
+        public TestableConductor(Mock<IProvider> mockNoxProvider)
             : base(mockNoxProvider.Object)
         {
             MockNoxProvider = mockNoxProvider;
         }
 
-        public static TestableNox Create()
+        public static TestableConductor Create()
         {
             var mockNoxProvider = new Mock<IProvider>();
             var mockCommand = new Mock<IDbCommand>();
@@ -38,7 +38,7 @@ namespace Nox.Tests.Helpers
                .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), 0))
                .Returns(mockCommand.Object);
 
-            return new TestableNox(mockNoxProvider);
+            return new TestableConductor(mockNoxProvider);
         }
 
         public static Mock<IDataReader> CreateDataReader()

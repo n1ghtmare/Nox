@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Nox")]
+[assembly: AssemblyTitle("conductor")]
 [assembly: AssemblyDescription("A light, simple, flexible and generally awesome micro ORM")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Dimitar Dimitrov")]
-[assembly: AssemblyProduct("Nox")]
+[assembly: AssemblyProduct("conductor")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

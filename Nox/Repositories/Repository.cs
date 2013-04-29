@@ -10,14 +10,14 @@ namespace Nox.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class, new()
     {
-        private readonly INox _nox;
+        private readonly IConductor _conductor;
         private readonly IQueryComposer _queryComposer;
         private readonly PropertyInfo _primaryKeyProperty;
         private readonly QueryCache _queryCache;
 
-        public Repository(INox nox, IQueryComposer queryComposer)
+        public Repository(IConductor conductor, IQueryComposer queryComposer)
         {
-            _nox = nox;
+            _conductor = conductor;
             _queryComposer = queryComposer;
             _primaryKeyProperty = GetPrimaryKeyProperty();
             _queryCache = new QueryCache();
@@ -35,7 +35,7 @@ namespace Nox.Repositories
         public IEnumerable<T> GetAll()
         {
             string selectQuery = ComposeAndCacheSelectQuery();
-            return _nox.Execute<T>(selectQuery);
+            return _conductor.Execute<T>(selectQuery);
         }
 
         public IEnumerable<T> Get(string where, object parameters)
@@ -44,7 +44,7 @@ namespace Nox.Repositories
                 throw new ArgumentNullException("parameters", "Can't pass null parameters, make sure you pass valid query parameters");
 
             string selectQuery = ComposeAndCacheSelectQuery();
-            return _nox.Execute<T>(string.Format("{0} WHERE {1}", selectQuery, where), parameters);
+            return _conductor.Execute<T>(string.Format("{0} WHERE {1}", selectQuery, where), parameters);
         }
 
         private string ComposeAndCacheSelectQuery()
@@ -57,7 +57,7 @@ namespace Nox.Repositories
         public void Create(T entity)
         {
             string insertQuery = ComposeAndCacheInsertQuery(entity);
-            var id = _nox.ExecuteScalar<object>(insertQuery, entity);
+            var id = _conductor.ExecuteScalar<object>(insertQuery, entity);
 
             _primaryKeyProperty.SetValue(entity, id);
         }
@@ -99,7 +99,7 @@ namespace Nox.Repositories
             if (string.IsNullOrEmpty(_queryCache.Update))
                 _queryCache.Update = _queryComposer.ComposeUpdate(typeof(T), _primaryKeyProperty.Name);
 
-            _nox.Execute(_queryCache.Update, entity);
+            _conductor.Execute(_queryCache.Update, entity);
         }
 
         public void Delete(T entity)
@@ -110,7 +110,7 @@ namespace Nox.Repositories
             if (string.IsNullOrEmpty(_queryCache.Delete))
                 _queryCache.Delete = _queryComposer.ComposeDelete(typeof (T), _primaryKeyProperty.Name);
 
-            _nox.Execute(_queryCache.Delete, entity);
+            _conductor.Execute(_queryCache.Delete, entity);
         }
     }
 }

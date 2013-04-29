@@ -3,7 +3,7 @@ using System.Data;
 
 namespace Nox.Interfaces
 {
-    public interface INox
+    public interface IConductor
     {
         IEnumerable<T> Execute<T>(string query) where T : new();
         IEnumerable<T> Execute<T>(string query, object parameters) where T : new();

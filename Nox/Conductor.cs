@@ -9,11 +9,11 @@ using Nox.Interfaces;
 
 namespace Nox
 {
-    public class Nox : INox
+    public class Conductor : IConductor
     {
         private readonly IProvider _provider;
 
-        public Nox(IProvider provider)
+        public Conductor(IProvider provider)
         {
             _provider = provider;
         }
