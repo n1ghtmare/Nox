@@ -39,7 +39,6 @@ namespace Nox
             using (IDbCommand command = _provider.CreateCommand(query, connection, commandType))
             {
                 AppendParameters(command, parameters);
-
                 connection.Open();
                 using (IDataReader reader = command.ExecuteReader())
                 {
@@ -120,7 +119,6 @@ namespace Nox
             for (int i = 0; i < reader.FieldCount; i++)
             {
                 PropertyInfo property = currentType.GetProperty(reader.GetName(i));
-
                 if (property != null)
                     property.SetValue(entity, reader[i]);
             }

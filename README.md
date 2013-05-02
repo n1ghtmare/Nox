@@ -48,7 +48,7 @@ We could execute this query and it will map for us the results as expected
 Ok, not so bad, but what about parameters ? Check this out:
 
 ```cs
-	IEnumerable<Employee> results = conductor.Execute<Employee>("SELECT * FROM Employee WHERE Id = @Id",	new {Id = 123});
+	IEnumerable<Employee> results = conductor.Execute<Employee>("SELECT * FROM Employee WHERE Id = @Id", new {Id = 123});
 ```
 
 Here is how you execute scalars (as an example a slightly longer query):
@@ -61,7 +61,7 @@ Here is how you execute scalars (as an example a slightly longer query):
 You can also work with dynamic return type:
 
 ```cs
-	IEnumerable<dynamic> results = conductor.Execute<dynamic>("SELECT Id, Name FROM Tasks", new {Id = 123});            
+	IEnumerable<dynamic> results = conductor.Execute<dynamic>("SELECT Id, Name FROM Tasks");            
 	foreach (var task in results)
 	{
 		Console.WriteLine("The Task Id is: {0}", task.Id);

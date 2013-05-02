@@ -9,7 +9,7 @@
     <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
     <projectUrl>https://github.com/n1ghtmare/Nox</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A light, simple, flexible and generally awesome micro ORM.</description>
+    <description>A light, simple, flexible, open source and generally awesome micro ORM.</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2013</copyright>
     <tags>ORM Micro Repository Object Relational Mapper Lightweight</tags>
