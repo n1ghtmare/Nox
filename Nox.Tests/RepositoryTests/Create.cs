@@ -45,7 +45,7 @@ namespace Nox.Tests.RepositoryTests
         }
 
         [Test]
-        public void Entity_CallsExecuteScalarWithCorrectlyComposedInserQuery()
+        public void Entity_CallsConductorExecuteScalarWithCorrectlyComposedInserQuery()
         {
             // Arrange
             var repository = TestableRepository<TestEntity1>.Create();
@@ -59,7 +59,7 @@ namespace Nox.Tests.RepositoryTests
             repository.Create(entity);
 
             // Assert
-            repository.MockNox
+            repository.MockConductor
                       .Verify(x => x.ExecuteScalar<object>(insertQuery, entity),
                               Times.Once());
         }
@@ -71,7 +71,7 @@ namespace Nox.Tests.RepositoryTests
             var repository = TestableRepository<TestEntity1>.Create();
             var entity = new TestEntity1();
 
-            repository.MockNox
+            repository.MockConductor
                       .Setup(x => x.ExecuteScalar<object>(It.IsAny<string>(), It.IsAny<object>()))
                       .Returns(123);
 

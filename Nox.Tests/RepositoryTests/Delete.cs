@@ -42,7 +42,7 @@ namespace Nox.Tests.RepositoryTests
         }
 
         [Test]
-        public void Entity_CallsNoxExecuteWithCorrectlyComposedDeleteQuery()
+        public void Entity_CallsConductorExecuteWithCorrectlyComposedDeleteQuery()
         {
             // Arrange
             var repository = TestableRepository<TestEntity1>.Create();
@@ -57,7 +57,7 @@ namespace Nox.Tests.RepositoryTests
             repository.Delete(entity);
 
             // Assert
-            repository.MockNox
+            repository.MockConductor
                       .Verify(x => x.Execute(deleteQuery, entity),
                               Times.Once());
         }

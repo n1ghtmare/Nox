@@ -13,7 +13,7 @@ namespace Nox.Tests.ConductorTests
     public class ExecuteScalar
     {
         [Test]
-        public void QueryScalar_CallsNoxProviderCreateConnection()
+        public void QueryScalar_CallsProviderCreateConnection()
         {
             // Arrange
             var conductor = TestableConductor.Create();
@@ -22,18 +22,18 @@ namespace Nox.Tests.ConductorTests
             conductor.ExecuteScalar<int>(TestableConductor.QueryScalar);
 
             // Assert
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Verify(x => x.CreateConnection(), Times.Once());
         }
 
         [Test]
-        public void QueryScalar_CallsNoxProviderCreateCommand()
+        public void QueryScalar_CallsProviderCreateCommand()
         {
             // Arrange
             var conductor = TestableConductor.Create();
             var mockConnection = new Mock<IDbConnection>();
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateConnection())
                      .Returns(mockConnection.Object);
 
@@ -41,47 +41,49 @@ namespace Nox.Tests.ConductorTests
             conductor.ExecuteScalar<int>(TestableConductor.QueryScalar);
 
             // Assert
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Verify(
                          x => x.CreateCommand(TestableConductor.QueryScalar, mockConnection.Object, (CommandType) 0),
                          Times.Once());
         }
 
         [Test]
-        public void QueryScalarWithParameters_CallsNoxProviderCreateParameters()
+        public void QueryScalarWithParameters_CallsProviderCreateParameters()
         {
             // Arrange
             var conductor = TestableConductor.Create();
-            var parameters = new {FirstName = "John", LastName = "Doe"};
+            var parameters = new { TestPropertyString = "TEST_STRING", TestPropertyInt = 123 };
 
             // Act
             conductor.ExecuteScalar<int>(TestableConductor.QueryScalarWithParameters, parameters);
 
             // Assert
-            conductor.MockNoxProvider
-                     .Verify(x => x.CreateParameters(parameters),
+            conductor.MockProvider
+                     .Verify(x => x.CreateParameters(
+                         It.Is<Dictionary<string, object>>(
+                             d => (string)  d["TestPropertyString"] == "TEST_STRING" &&
+                                  (int)     d["TestPropertyInt"] == 123)),
                              Times.Once());
         }
 
         [Test]
-        public void QueryScalarWithParameters_CallsNoxProviderCommandAddParameterForEachProvidedParameter()
+        public void QueryScalarWithParameters_CallsProviderCommandAddParameterForEachProvidedParameter()
         {
             // Arrange
             var conductor = TestableConductor.Create();
-            var parameters =
-                new {TestFirstParameter = "FirstParameterValue", TestSecondParameter = "SecondParameterValue"};
+            var parameters = new { TestPropertyString = "TEST_STRING", TestPropertyInt = 123 };
             var mockCommand = new Mock<IDbCommand>();
             var mockParameterCollection = new Mock<IDataParameterCollection>();
 
             mockCommand.Setup(x => x.Parameters).Returns(mockParameterCollection.Object);
             mockCommand.Setup(x => x.ExecuteScalar()).Returns(0);
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType) 0))
                      .Returns(mockCommand.Object);
 
-            conductor.MockNoxProvider
-                     .Setup(x => x.CreateParameters(It.IsAny<object>()))
+            conductor.MockProvider
+                     .Setup(x => x.CreateParameters(It.IsAny<IDictionary<string, object>>()))
                      .Returns(new List<IDbDataParameter>
                      {
                          new SqlParameter("@TestFirstParameter", "FirstParameterValue"),
@@ -98,13 +100,13 @@ namespace Nox.Tests.ConductorTests
         }
 
         [Test]
-        public void QueryScalarWithParameters_CallsNoxProviderConnectionOpen()
+        public void QueryScalarWithParameters_CallsProviderConnectionOpen()
         {
             // Arrange
             var conductor = TestableConductor.Create();
             var mockConnection = new Mock<IDbConnection>();
 
-            conductor.MockNoxProvider.Setup(x => x.CreateConnection()).Returns(mockConnection.Object);
+            conductor.MockProvider.Setup(x => x.CreateConnection()).Returns(mockConnection.Object);
 
             // Act
             conductor.ExecuteScalar<int>(TestableConductor.QueryScalar);
@@ -114,7 +116,7 @@ namespace Nox.Tests.ConductorTests
         }
 
         [Test]
-        public void QueryScalar_CallsNoxProviderCommandExecuteScalar()
+        public void QueryScalar_CallsProviderCommandExecuteScalar()
         {
             // Arrange
             var conductor = TestableConductor.Create();
@@ -122,7 +124,7 @@ namespace Nox.Tests.ConductorTests
 
             mockCommand.Setup(x => x.ExecuteScalar()).Returns(0);
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType) 0))
                      .Returns(mockCommand.Object);
 
@@ -142,7 +144,7 @@ namespace Nox.Tests.ConductorTests
 
             mockCommand.Setup(x => x.ExecuteScalar()).Returns(1);
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType) 0))
                      .Returns(mockCommand.Object);
 

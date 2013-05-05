@@ -15,84 +15,85 @@ namespace Nox.Tests.ConductorTests
     public class Execute
     {
         [Test]
-        public void Query_CallsNoxProviderCreateConnection()
+        public void Query_CallsProviderCreateConnection()
         {
             // Arrange
             var conductor = TestableConductor.Create();
 
             // Act
-            Enumerable.ToList<TestEntity1>(conductor.Execute<TestEntity1>(TestableConductor.Query));
+            conductor.Execute<TestEntity1>(TestableConductor.Query).ToList();
 
             // Assert
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Verify(x => x.CreateConnection(), Times.Once());
         }
 
         [Test]
-        public void Query_CallsNoxProviderCreateCommand()
+        public void Query_CallsProviderCreateCommand()
         {
             // Arrange
             var conductor = TestableConductor.Create();
             var mockConnection = new Mock<IDbConnection>();
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateConnection())
                      .Returns(mockConnection.Object);
 
             // Act
-            Enumerable.ToList<TestEntity1>(conductor.Execute<TestEntity1>(TestableConductor.Query));
+            conductor.Execute<TestEntity1>(TestableConductor.Query).ToList();
 
             // Assert
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Verify(x => x.CreateCommand(TestableConductor.Query, mockConnection.Object, (CommandType) 0),
                              Times.Once());
         }
 
         [Test]
-        public void QueryWithParameters_CallsNoxProviderCreateParameters()
+        public void QueryWithParameters_CallsProviderCreateParameters()
         {
             // Arrange
             var conductor = TestableConductor.Create();
-            var parameters = new {FirstName = "John", LastName = "Doe"};
+            var parameters = new {TestPropertyString = "TEST_STRING", TestPropertyInt = 123};
 
 
             // Act
-            Enumerable.ToList<TestEntity1>(conductor.Execute<TestEntity1>(TestableConductor.QueryWithParameters, parameters));
+            conductor.Execute<TestEntity1>(TestableConductor.QueryWithParameters, parameters).ToList();
 
             // Assert
-            conductor.MockNoxProvider
-               .Verify(x => x.CreateParameters(parameters),
-                       Times.Once());
+            conductor.MockProvider
+                     .Verify(x => x.CreateParameters(
+                         It.Is<Dictionary<string, object>>(
+                             d => (string)  d["TestPropertyString"] == "TEST_STRING" &&
+                                  (int)     d["TestPropertyInt"] == 123)),
+                             Times.Once());
         }
-
+        
         [Test]
-        public void QueryWithParameters_CallsNoxProviderCommandAddParameterForEachProvidedParameter()
+        public void QueryWithParameters_CallsProviderCommandAddParameterForEachProvidedParameter()
         {
             // Arrange
             var conductor = TestableConductor.Create();
-            var parameters =
-                new {TestFirstParameter = "FirstParameterValue", TestSecondParameter = "SecondParameterValue"};
+            var parameters = new { TestPropertyString = "TEST_STRING", TestPropertyInt = 123 };
             var mockCommand = new Mock<IDbCommand>();
             var mockParameterCollection = new Mock<IDataParameterCollection>();
 
             mockCommand.Setup(x => x.Parameters)
                        .Returns(mockParameterCollection.Object);
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType) 0))
                      .Returns(mockCommand.Object);
 
-            conductor.MockNoxProvider
-                     .Setup(x => x.CreateParameters(It.IsAny<object>()))
+            conductor.MockProvider
+                     .Setup(x => x.CreateParameters(It.IsAny<IDictionary<string, object>>()))
                      .Returns(new List<IDbDataParameter>
                      {
-                         new SqlParameter("@TestFirstParameter", "FirstParameterValue"),
-                         new SqlParameter("@TestSecondParameter", "SecondParameterValue")
+                         new SqlParameter("@TestPropertyString", "TEST_STRING"),
+                         new SqlParameter("@TestPropertyInt", 123)
                      });
 
             // Act
-            Enumerable.ToList<TestEntity1>(conductor.Execute<TestEntity1>(TestableConductor.QueryWithParameters,
-                                                                          parameters));
+            conductor.Execute<TestEntity1>(TestableConductor.QueryWithParameters, parameters).ToList();
 
             // Assert
             mockParameterCollection
@@ -101,36 +102,59 @@ namespace Nox.Tests.ConductorTests
         }
 
         [Test]
-        public void Query_CallsNoxProviderConnectionOpen()
+        public void QueryWithParametersOfTypeDictionary_CallsProviderCreateParameters()
+        {
+            // Arrange
+            var conductor = TestableConductor.Create();
+            var parameters = new Dictionary<string, object>
+            {
+                {"TestPropertyString", "TEST_STRING"},
+                {"TestPropertyInt", 123}
+            };
+
+            // Act
+            conductor.Execute<TestEntity1>(TestableConductor.QueryWithParameters, parameters).ToList();
+
+            // Assert
+            conductor.MockProvider
+                     .Verify(x => x.CreateParameters(
+                         It.Is<Dictionary<string, object>>(
+                             d => (string)d["TestPropertyString"] == "TEST_STRING" &&
+                                  (int)d["TestPropertyInt"] == 123)),
+                             Times.Once());
+        }
+
+        [Test]
+        public void Query_CallsProviderConnectionOpen()
         {
             // Arrange
             var conductor = TestableConductor.Create();
             var mockConnection = new Mock<IDbConnection>();
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateConnection())
                      .Returns(mockConnection.Object);
 
             // Act
-            Enumerable.ToList<TestEntity1>(conductor.Execute<TestEntity1>(TestableConductor.Query));
+            conductor.Execute<TestEntity1>(TestableConductor.Query).ToList();
 
             // Assert
             mockConnection.Verify(x => x.Open(), Times.Once());
         }
 
         [Test]
-        public void Query_CallsNoxProviderCommandExecuteReader()
+        public void Query_CallsProviderCommandExecuteReader()
         {
             // Arrange
             var conductor = TestableConductor.Create();
             var mockCommand = new Mock<IDbCommand>();
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType)0))
                .Returns(mockCommand.Object);
 
             // Act
-            Enumerable.ToList<TestEntity1>(conductor.Execute<TestEntity1>(TestableConductor.Query));
+            conductor.Execute<TestEntity1>(TestableConductor.Query).ToList();
 
             // Assert
             mockCommand.Verify(x => x.ExecuteReader(), Times.Once());
@@ -146,7 +170,7 @@ namespace Nox.Tests.ConductorTests
 
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType) 0))
                      .Returns(mockCommand.Object);
 
@@ -177,7 +201,7 @@ namespace Nox.Tests.ConductorTests
 
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType) 0))
                      .Returns(mockCommand.Object);
 
@@ -200,7 +224,7 @@ namespace Nox.Tests.ConductorTests
 
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType) 0))
                      .Returns(mockCommand.Object);
 
@@ -223,14 +247,14 @@ namespace Nox.Tests.ConductorTests
 
             mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
 
-            conductor.MockNoxProvider
+            conductor.MockProvider
                      .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType) 0))
                      .Returns(mockCommand.Object);
 
             // Act
             var results =
                 Assert.Throws<Exception>(
-                    () => Enumerable.ToList<int>(conductor.Execute<int>(query: TestableConductor.Query)));
+                    () => conductor.Execute<int>(query: TestableConductor.Query).ToList());
 
             // Assert
             StringAssert.StartsWith(

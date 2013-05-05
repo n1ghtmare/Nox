@@ -7,13 +7,13 @@ namespace Nox.Tests.Helpers
 {
     public class TestableRepository<T> : Repository<T> where T : class, new()
     {
-        public Mock<IConductor> MockNox { get; set; }
+        public Mock<IConductor> MockConductor { get; set; }
         public Mock<IQueryComposer> MockQueryComposer { get; set; }
 
-        public TestableRepository(Mock<IConductor> mockNox, Mock<IQueryComposer> mockQueryComposer) 
-            : base(mockNox.Object, mockQueryComposer.Object)
+        public TestableRepository(Mock<IConductor> mockConductor, Mock<IQueryComposer> mockQueryComposer) 
+            : base(mockConductor.Object, mockQueryComposer.Object)
         {
-            MockNox = mockNox;
+            MockConductor = mockConductor;
             MockQueryComposer = mockQueryComposer;
         }
 

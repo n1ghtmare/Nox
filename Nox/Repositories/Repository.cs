@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-
+using System.Text;
 using Nox.Helpers;
 using Nox.Interfaces;
 
 namespace Nox.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class, new()
+    public class Repository<T> : DynamicObject, IRepository<T> where T : class, new()
     {
         private readonly IConductor _conductor;
         private readonly IQueryComposer _queryComposer;
@@ -112,6 +112,41 @@ namespace Nox.Repositories
                 _queryCache.Delete = _queryComposer.ComposeDelete(typeof (T), _primaryKeyProperty.Name);
 
             _conductor.Execute(_queryCache.Delete, entity);
+        }
+
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
+        {
+            if (binder.Name.StartsWith("GetWhere_", StringComparison.OrdinalIgnoreCase))
+            {
+                var parameters = ComposeParameterDictionary(binder, args);
+                var selectQuery = _queryComposer.ComposeSelect(typeof (T), binder.Name);
+
+                result = _conductor.Execute<T>(selectQuery, parameters);
+                return true;
+            }
+            return base.TryInvokeMember(binder, args, out result);
+        }
+
+        private static Dictionary<string, object> ComposeParameterDictionary(InvokeMemberBinder binder, object[] args)
+        {
+            var parameters = new Dictionary<string, object>();
+
+            IEnumerable<string> segments = GetParameterSegments(binder);
+            if (!segments.Any())
+                throw new Exception("Can't detect parameter segments in your invokation");
+
+            for (int i = 0; i < segments.Count(); i++)
+                parameters.Add(segments.ElementAt(i), args[i]);
+
+            return parameters;
+        }
+
+        private static IEnumerable<string> GetParameterSegments(InvokeMemberBinder binder)
+        {
+            return binder.Name.Split('_').Skip(1)
+                         .Where(s => !s.Equals("AND", StringComparison.OrdinalIgnoreCase) &&
+                                     !s.Equals("OR", StringComparison.OrdinalIgnoreCase) &&
+                                     !string.IsNullOrEmpty(s));
         }
     }
 }

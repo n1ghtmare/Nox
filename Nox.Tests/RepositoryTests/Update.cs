@@ -28,7 +28,7 @@ namespace Nox.Tests.RepositoryTests
         }
 
         [Test]
-        public void Entity_CallsNoxExecuteWithCorrectlyComposedUpdateQuery()
+        public void Entity_CallsConductorExecuteWithCorrectlyComposedUpdateQuery()
         {
             // Arrange
             var repository = TestableRepository<TestEntity1>.Create();
@@ -43,7 +43,7 @@ namespace Nox.Tests.RepositoryTests
             repository.Update(entity);
 
             // Assert
-            repository.MockNox
+            repository.MockConductor
                       .Verify(x => x.Execute(updateQuery, entity),
                               Times.Once());
         }

@@ -14,7 +14,7 @@ namespace Nox.Tests.RepositoryTests
     public class Get
     {
         [Test]
-        public void EntityWhereAndParameters_CallsNoxExecuteWithCorrectlyComposedQuery()
+        public void EntityWhereAndParameters_CallsConductorExecuteWithCorrectlyComposedQuery()
         {
             // Arrange
             var repository = TestableRepository<TestEntity1>.Create();
@@ -31,7 +31,7 @@ namespace Nox.Tests.RepositoryTests
             repository.Get(where, parameters);
 
             // Assert
-            repository.MockNox
+            repository.MockConductor
                       .Verify(x => x.Execute<TestEntity1>(expectedQuery, parameters),
                               Times.Once());
         }
@@ -58,7 +58,7 @@ namespace Nox.Tests.RepositoryTests
             // Arrange
             var repository = TestableRepository<TestEntity1>.Create();
 
-            repository.MockNox
+            repository.MockConductor
                       .Setup(x => x.Execute<TestEntity1>(It.IsAny<string>(), It.IsAny<object>()))
                       .Returns(new List<TestEntity1> {new TestEntity1(), new TestEntity1()});
             

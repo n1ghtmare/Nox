@@ -102,10 +102,23 @@ namespace Nox
 
         private void AppendParameters(IDbCommand command, object parameters)
         {
-            IEnumerable<IDataParameter> generatedParameters = _provider.CreateParameters(parameters);
+            if (parameters != null)
+            {
+                IDictionary<string, object> parameterDictionary = GenerateParameterDictionary(parameters);
+                IEnumerable<IDataParameter> generatedParameters = _provider.CreateParameters(parameterDictionary);
 
-            foreach (IDataParameter parameter in generatedParameters)
-                command.Parameters.Add(parameter);
+                foreach (IDataParameter parameter in generatedParameters)
+                    command.Parameters.Add(parameter);
+            }
+        }
+
+        private static IDictionary<string, object> GenerateParameterDictionary(object parameters)
+        {
+            Type parametersType = parameters.GetType();
+
+            return parametersType != typeof (Dictionary<string, object>)
+                       ? parametersType.GetProperties().ToDictionary(p => p.Name, p => p.GetValue(parameters, null))
+                       : parameters as Dictionary<string, object>;
         }
 
         private static T ComposeType<T>(IDataReader reader) where T : new()

@@ -58,6 +58,7 @@
     <Compile Include="RepositoryTests\Delete.cs" />
     <Compile Include="RepositoryTests\Get.cs" />
     <Compile Include="RepositoryTests\GetAll.cs" />
+    <Compile Include="RepositoryTests\GetWhereDynamic.cs" />
     <Compile Include="RepositoryTests\Update.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\TestableConductor.cs" />

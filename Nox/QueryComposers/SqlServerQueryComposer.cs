@@ -69,5 +69,21 @@ namespace Nox.QueryComposers
 
             return string.Format("SELECT {0} FROM {1}", FlattenQuerySegments(queryColumns), entityType.Name);
         }
+
+        public string ComposeSelect(Type entityType, string invokingMethodName)
+        {
+            var builder = new StringBuilder();
+            builder.AppendFormat("{0} WHERE ", ComposeSelect(entityType));
+
+            foreach(string segment in invokingMethodName.Split('_').Skip(1))
+            {
+                if (segment.Equals("AND", StringComparison.OrdinalIgnoreCase) ||
+                    segment.Equals("OR", StringComparison.OrdinalIgnoreCase))
+                    builder.AppendFormat(" {0} ", segment.ToUpper());
+                else
+                    builder.AppendFormat("{0} = @{0}", segment);
+            }
+            return builder.ToString();
+        }
     }
 }

@@ -7,6 +7,6 @@ namespace Nox.Interfaces
     {
         IDbConnection CreateConnection();
         IDbCommand CreateCommand(string query, IDbConnection connection, CommandType commandType);
-        IEnumerable<IDataParameter> CreateParameters(object parameters);
+        IEnumerable<IDataParameter> CreateParameters(IDictionary<string, object> parameters);
     }
 }

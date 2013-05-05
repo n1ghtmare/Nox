@@ -13,12 +13,12 @@ namespace Nox.Tests.Helpers
         public const string Query = "select * from TestTable";
         public const string QueryWithParameters = Query + " where TestFirstParameter = @TestFirstParameter and TestSecondParameter = @TestSecondParameter";
 
-        public Mock<IProvider> MockNoxProvider { get; set; }
+        public Mock<IProvider> MockProvider { get; set; }
 
-        public TestableConductor(Mock<IProvider> mockNoxProvider)
-            : base(mockNoxProvider.Object)
+        public TestableConductor(Mock<IProvider> mockProvider)
+            : base(mockProvider.Object)
         {
-            MockNoxProvider = mockNoxProvider;
+            MockProvider = mockProvider;
         }
 
         public static TestableConductor Create()
