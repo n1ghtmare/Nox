@@ -114,10 +114,10 @@ As you can see so far, you can extend Nox and the Repository in numerous ways, a
 	repository.Update(employee);	
 ```
 
-Repository with dynamic magic
+A Dynamic Repository
 -----------------------------
 
-The repository can be used in some interesting ways if you declare it as `dynamic`, it will try its best to interpret your queries into the correct SQL, check this out:
+The repository can be used in some interesting ways if you declare it as `dynamic`, it will try its best to translate your method invokations into the correct SQL, check this out:
 
 ```cs
 	// declaring it as dynamic 
