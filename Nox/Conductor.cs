@@ -128,7 +128,7 @@ namespace Nox
             if (currentType.GetProperties().Length == 0)
                 throw new Exception("Can't map the results to the provided type, you can try to use dynamic as return type.");
 
-            dynamic entity = new T();
+            var entity = new T();
             for (int i = 0; i < reader.FieldCount; i++)
             {
                 PropertyInfo property = currentType.GetProperty(reader.GetName(i));

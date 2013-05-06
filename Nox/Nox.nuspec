@@ -12,6 +12,6 @@
     <description>A light, simple, flexible, open source and generally awesome micro ORM.</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2013</copyright>
-    <tags>ORM Micro Repository Object Relational Mapper Lightweight</tags>
+    <tags>ORM Micro Repository Object Relational Mapper Lightweight Dynamic</tags>
   </metadata>
 </package>

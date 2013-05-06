@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+
 using Nox.Interfaces;
 
 namespace Nox.Providers
@@ -30,22 +31,6 @@ namespace Nox.Providers
         {
             return new SqlCommand(query, connection as SqlConnection) { CommandType = commandType };
         }
-
-//        public IEnumerable<IDataParameter> CreateParameters(object parameters)
-//        {
-//            if (parameters != null)
-//            {
-//                foreach (var propertyInfo in parameters.GetType().GetProperties())
-//                {
-//                    var sqlParameter = new SqlParameter
-//                    {
-//                        ParameterName = string.Format("@{0}", propertyInfo.Name),
-//                        Value = propertyInfo.GetValue(parameters, null)
-//                    };
-//                    yield return sqlParameter;
-//                }
-//            }
-//        }
 
         public IEnumerable<IDataParameter> CreateParameters(IDictionary<string, object> parameters)
         {

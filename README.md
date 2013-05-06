@@ -114,6 +114,27 @@ As you can see so far, you can extend Nox and the Repository in numerous ways, a
 	repository.Update(employee);	
 ```
 
+Repository with dynamic magic
+-----------------------------
+
+The repository can be used in some interesting ways if you declare it as `dynamic`, it will try its best to interpret your queries into the correct SQL, check this out:
+
+```cs
+	// declaring it as dynamic 
+	dynamic repository = new SqlServerRepository<Employee>();
+
+	// write the query as a method
+	IEnumerable<Employee> results = sqlServerRepository.GetWhere_FirstName("Neo");
+
+	// or something a little more complex
+	IEnumerable<Accounts> results = sqlServerRepository.GetWhere_FirstName_And_LastName("John", "Smith");
+	IEnumerable<Accounts> results = sqlServerRepository.GetWhere_FirstName_Or_Email("John", "jsmith@internet.com");
+
+	// classic
+	IEnumerable<Accounts> results = sqlServerRepository.GetWhere_Id(1);
+```
+
 Adding more documentation is a high priority, bare with me.
 More stuff is to come, contributions, suggestions and issue reports are highly appreciated.
+
 Join me coding ! :)
