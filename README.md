@@ -127,11 +127,11 @@ The repository can be used in some interesting ways if you declare it as `dynami
 	IEnumerable<Employee> results = sqlServerRepository.GetWhere_FirstName("Neo");
 
 	// or something a little more complex
-	IEnumerable<Accounts> results = sqlServerRepository.GetWhere_FirstName_And_LastName("John", "Smith");
-	IEnumerable<Accounts> results = sqlServerRepository.GetWhere_FirstName_Or_Email("John", "jsmith@internet.com");
+	IEnumerable<Employee> results = sqlServerRepository.GetWhere_FirstName_And_LastName("John", "Smith");
+	IEnumerable<Employee> results = sqlServerRepository.GetWhere_FirstName_Or_Email("John", "jsmith@internet.com");
 
 	// classic
-	IEnumerable<Accounts> results = sqlServerRepository.GetWhere_Id(1);
+	IEnumerable<Employee> results = sqlServerRepository.GetWhere_Id(1);
 ```
 
 Adding more documentation is a high priority, bare with me.
