@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using Microsoft.CSharp.RuntimeBinder;
 
 using Moq;
 using NUnit.Framework;
-using Nox.Providers;
-using Nox.Repositories;
+
 using Nox.Tests.Helpers;
 using Nox.Tests.Helpers.Entities;
 
@@ -122,13 +121,5 @@ namespace Nox.Tests.RepositoryTests
                        .Verify(x => x.ComposeSelect(typeof(TestEntity1), "getWhere_TestPropertyString"),
                                Times.Once());
         }
-    }
-
-    internal class Accounts
-    {
-        public long ID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string DisplayName { get; set; }
     }
 }
