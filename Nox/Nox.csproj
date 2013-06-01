@@ -43,6 +43,7 @@
     <Compile Include="Interfaces\IQueryComposer.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Conductor.cs" />
+    <Compile Include="Providers\OleDbProvider.cs" />
     <Compile Include="Providers\SqlServerProvider.cs" />
     <Compile Include="QueryComposers\SqlServerQueryComposer.cs" />
     <Compile Include="Repositories\Repository.cs" />

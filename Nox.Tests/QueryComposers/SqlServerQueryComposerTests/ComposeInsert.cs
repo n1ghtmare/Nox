@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Nox.QueryComposers;
 using Nox.Tests.Helpers.Entities;
 
-namespace Nox.Tests.QueryComposersTests.SqlServerQueryComposerTests
+namespace Nox.Tests.QueryComposers.SqlServerQueryComposerTests
 {
     [TestFixture]
     public class ComposeInsert

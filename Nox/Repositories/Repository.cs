@@ -52,6 +52,7 @@ namespace Nox.Repositories
         {
             if (string.IsNullOrEmpty(_queryCache.Select))
                 _queryCache.Select = _queryComposer.ComposeSelect(typeof(T));
+
             return _queryCache.Select;
         }
 
