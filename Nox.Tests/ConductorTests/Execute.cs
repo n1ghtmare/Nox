@@ -6,7 +6,7 @@ using System.Linq;
 
 using Moq;
 using NUnit.Framework;
-
+using Nox.Providers;
 using Nox.Tests.Helpers;
 using Nox.Tests.Helpers.Entities;
 
@@ -215,6 +215,47 @@ namespace Nox.Tests.ConductorTests
         }
 
         [Test]
+        public void QueryReturningADBValueNullFor2Columns_MapsItToTheCorrectDefaultValue()
+        {
+            // Arrange
+            var conductor = TestableConductor.Create();
+            var mockDataReader = TestableConductor.CreateDataReader();
+            var readToggle = true;
+
+            mockDataReader.Setup(x => x.Read()).Returns(() => readToggle).Callback(() => readToggle = false);
+            mockDataReader.Setup(x => x.FieldCount).Returns(3);
+
+            mockDataReader.Setup(x => x.GetName(0)).Returns("TestPropertyString");
+            mockDataReader.Setup(x => x[0]).Returns(DBNull.Value);
+
+            mockDataReader.Setup(x => x.GetName(1)).Returns("TestPropertyInt");
+            mockDataReader.Setup(x => x[1]).Returns(DBNull.Value);
+
+            mockDataReader.Setup(x => x.GetName(2)).Returns("TestPropertyDate");
+            mockDataReader.Setup(x => x[2]).Returns(DBNull.Value);
+
+            mockDataReader.Setup(x => x.GetName(3)).Returns("TestPropertyIntNullable");
+            mockDataReader.Setup(x => x[3]).Returns(DBNull.Value);
+
+            var mockCommand = new Mock<IDbCommand>();
+
+            mockCommand.Setup(x => x.ExecuteReader()).Returns(mockDataReader.Object);
+
+            conductor.MockProvider
+                     .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), (CommandType)0))
+                     .Returns(mockCommand.Object);
+
+            // Act
+            TestEntity5 testEntity = conductor.Execute<TestEntity5>(TestableConductor.Query).ToList().First();
+
+            // Assert
+            Assert.IsNullOrEmpty(testEntity.TestPropertyString);
+            Assert.AreEqual(0, testEntity.TestPropertyInt);
+            Assert.AreEqual(DateTime.MinValue, testEntity.TestPropertyDateTime);
+            Assert.IsNull(testEntity.TestPropertyIntNullable);
+        }
+
+        [Test]
         public void QueryAndType_ReturnsCorrectlyMappedType()
         {
             // Arrange
@@ -261,5 +302,25 @@ namespace Nox.Tests.ConductorTests
                 "Can't map the results to the provided type, you can try to use dynamic as return type.",
                 results.Message);
         }
+
+        [Test]
+        public void Scenario_Behavior()
+        {
+            // Arrange
+            var sqlServerProvider = new SqlServerProvider();
+            var conductor = new Conductor(sqlServerProvider);
+
+            // Act
+            var results = conductor.Execute<Test>("select * from Test_1").ToList();
+
+            // Assert
+
+        }
+    }
+
+    class Test
+    {
+        public int Id { get; set; }
+        public string TestString { get; set; }
     }
 }

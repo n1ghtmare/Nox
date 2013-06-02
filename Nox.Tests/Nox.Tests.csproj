@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\Entities\TestEntity4.cs" />
+    <Compile Include="Helpers\Entities\TestEntity5.cs" />
     <Compile Include="Helpers\Entities\TestEntityBase.cs" />
     <Compile Include="Helpers\TestableRepository.cs" />
     <Compile Include="Helpers\Entities\TestEntity2.cs" />

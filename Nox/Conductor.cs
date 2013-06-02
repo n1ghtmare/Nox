@@ -133,9 +133,24 @@ namespace Nox
             {
                 PropertyInfo property = currentType.GetProperty(reader.GetName(i));
                 if (property != null)
-                    property.SetValue(entity, reader[i]);
+                {
+                    var readerValue = GetReaderValue(reader, i);
+                    property.SetValue(entity, readerValue);
+                }
             }
             return entity;
+        }
+
+        private static object GetReaderValue(IDataReader reader, int fieldIndex)
+        {
+            if (reader[fieldIndex] != DBNull.Value)
+                return reader[fieldIndex];
+
+            Type readerType = reader[fieldIndex].GetType();
+
+            return readerType.IsValueType
+                       ? Activator.CreateInstance(readerType)
+                       : null;
         }
 
         private static IDictionary<string, object> ComposeExpandoObject(IDataReader reader)
