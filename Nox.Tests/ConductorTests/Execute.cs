@@ -302,25 +302,5 @@ namespace Nox.Tests.ConductorTests
                 "Can't map the results to the provided type, you can try to use dynamic as return type.",
                 results.Message);
         }
-
-        [Test]
-        public void Scenario_Behavior()
-        {
-            // Arrange
-            var sqlServerProvider = new SqlServerProvider();
-            var conductor = new Conductor(sqlServerProvider);
-
-            // Act
-            var results = conductor.Execute<Test>("select * from Test_1").ToList();
-
-            // Assert
-
-        }
-    }
-
-    class Test
-    {
-        public int Id { get; set; }
-        public string TestString { get; set; }
     }
 }
