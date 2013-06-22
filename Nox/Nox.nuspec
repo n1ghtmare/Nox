@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Nox</id>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <title>Nox</title>
     <authors>Dimitar Dimitrov</authors>
     <owners>Dimitar Dimitrov</owners>
@@ -12,6 +12,6 @@
     <description>A light, simple, flexible, open source and generally awesome micro ORM.</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright 2013</copyright>
-    <tags>ORM Micro Repository Object Relational Mapper Lightweight Dynamic</tags>
+    <tags>ORM Micro Small Database Repository Object Relational Mapper Lightweight Dynamic</tags>
   </metadata>
 </package>
