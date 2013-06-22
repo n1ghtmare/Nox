@@ -20,12 +20,12 @@ namespace Nox
 
         public IEnumerable<T> Execute<T>(string query) where T : new()
         {
-            return Execute<T>(query, null, (CommandType)0);
+            return Execute<T>(query, null, CommandType.Text);
         }
 
         public IEnumerable<T> Execute<T>(string query, object parameters) where T : new()
         {
-            return Execute<T>(query, parameters, (CommandType) 0);
+            return Execute<T>(query, parameters, CommandType.Text);
         }
 
         public IEnumerable<T> Execute<T>(string query, CommandType commandType) where T : new()
