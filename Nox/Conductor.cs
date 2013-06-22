@@ -55,12 +55,12 @@ namespace Nox
 
         public IEnumerable<dynamic> Execute(string query)
         {
-            return Execute(query, null, (CommandType) 0);
+            return Execute(query, null, CommandType.Text);
         }
 
         public IEnumerable<dynamic> Execute(string query, object parameters)
         {
-            return Execute(query, parameters, (CommandType) 0);
+            return Execute(query, parameters, CommandType.Text);
         }
 
         public IEnumerable<dynamic> Execute(string query, CommandType commandType)
@@ -75,12 +75,12 @@ namespace Nox
 
         public T ExecuteScalar<T>(string query)
         {
-            return ExecuteScalar<T>(query, null, (CommandType) 0);
+            return ExecuteScalar<T>(query, null, CommandType.Text);
         }
 
         public T ExecuteScalar<T>(string query, object parameters)
         {
-            return ExecuteScalar<T>(query, parameters, (CommandType) 0);
+            return ExecuteScalar<T>(query, parameters, CommandType.Text);
         }
 
         public T ExecuteScalar<T>(string query, CommandType commandType)

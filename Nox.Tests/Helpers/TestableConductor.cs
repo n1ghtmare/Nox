@@ -35,7 +35,7 @@ namespace Nox.Tests.Helpers
                 .Returns(new Mock<IDbConnection>().Object);
 
             mockNoxProvider
-               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), 0))
+               .Setup(x => x.CreateCommand(It.IsAny<string>(), It.IsAny<IDbConnection>(), CommandType.Text))
                .Returns(mockCommand.Object);
 
             return new TestableConductor(mockNoxProvider);
