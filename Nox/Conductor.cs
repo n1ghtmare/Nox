@@ -96,7 +96,8 @@ namespace Nox
                 AppendParameters(command, parameters);
 
                 connection.Open();
-                return (T)command.ExecuteScalar();
+                object result = command.ExecuteScalar();
+                return result == null ? default(T) : (T)result;
             }
         }
 
